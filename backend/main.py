@@ -10,7 +10,7 @@ def run_api():
 
 def run_parser():
     # schedule the parser
-    schedule.every().day.at("09:53").do(job)
+    schedule.every().day.at("13:40").do(job)
 
     print("📌 Parser scheduler started.")
     while True:

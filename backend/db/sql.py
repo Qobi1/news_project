@@ -3,7 +3,7 @@ from db.model import Event, Session
 
 
 # Insert function
-async def insert_event(event_data: dict):
+def insert_event(event_data: dict):
     """Insert a single event into the database."""
     session = Session()
     try:

@@ -16,15 +16,24 @@ def parse_event_detail(url):
     res.encoding = "utf-8"
     soup = BeautifulSoup(res.text, "html.parser")
 
-    # Описание (весь текст статьи)
+    # Описание с HTML
     desc_el = soup.select_one("section.afisha-section article.event-article")
-    description = desc_el.get_text(" ", strip=True) if desc_el else None
+    description = str(desc_el) if desc_el else None
 
-    # Место (3-я колонка в таблице)
+    # Добавляем картинки из галереи (content-slider)
+    gallery_imgs = []
+    for img in soup.select(".content-slider__item img"):
+        gallery_imgs.append(img["src"])
+    # Можно вставить в описание или хранить отдельно
+    if gallery_imgs:
+        description += "".join([f'<img src="{src}" />' for src in gallery_imgs])
+
+    # Место
     place_el = soup.select_one(".schedule-table__tr td:nth-of-type(3)")
     place = place_el.get_text(strip=True) if place_el else None
 
     return place, description
+
 
 
 def parse_listing():
