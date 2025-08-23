@@ -109,6 +109,7 @@ def parse_listing():
             "image_url": img_url,
             "category": category,
             "link": link_url,
+            'created_at': datetime.now(MOSCOW_TZ)
         }
         if date_text is None or date_time is None:
             break

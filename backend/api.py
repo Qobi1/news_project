@@ -1,7 +1,9 @@
-from datetime import datetime
+from datetime import datetime, date
 from typing import List
 from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
+from sqlalchemy import func
+
 from db.model import Event
 from db.model import Session
 from fastapi.middleware.cors import CORSMiddleware
@@ -48,7 +50,15 @@ def get_db():
 # --- Endpoints ---
 @app.get("/news/", response_model=List[NewsBase])
 def get_news(db: Session = Depends(get_db)):
-    return db.query(Event).order_by(Event.id.desc()).limit(20).all()
+    today = date.today()
+    events = (
+        db.query(Event)
+        .filter(func.date(Event.created_at) == today)  # only today’s rows
+        .order_by(Event.id.desc())
+        .limit(20)
+        .all()
+    )
+    return events
 
 
 @app.get("/news/{id}", response_model=NewsBase)
