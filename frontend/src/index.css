@@ -1,0 +1,361 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for the news website */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+}
+
+/* Hero section styling */
+.hero-section {
+  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+  min-height: 80vh;
+}
+
+.min-vh-75 {
+  min-height: 75vh;
+}
+
+/* News card hover effects */
+.hover-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+  border-color: #0d6efd;
+}
+
+/* News image styling */
+.news-image {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.hover-card:hover .news-image {
+  transform: scale(1.05);
+}
+
+/* Fade-in animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.fade-in-article {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Article hero image */
+.article-hero-image {
+  height: 400px;
+  object-fit: cover;
+}
+
+/* Article content styling */
+.article-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.article-content p {
+  text-align: justify;
+}
+
+/* Social links hover effects */
+.social-links a {
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #0d6efd !important;
+  transform: translateY(-2px);
+}
+
+/* Button animations */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Navigation improvements */
+.navbar-brand {
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+/* Section spacing */
+section {
+  scroll-margin-top: 80px;
+}
+
+/* Card improvements */
+.card {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+/* Gradient and professional button styles */
+.btn-gradient {
+  background: linear-gradient(90deg, #3949ab 0%, #1976d2 100%);
+  color: #fff !important;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  padding: 0.6rem 1.3rem;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-gradient:hover, .btn-gradient:focus {
+  background: linear-gradient(90deg, #ffeb3b 0%, #fff176 100%);
+  color: #232526 !important;
+  box-shadow: 0 4px 16px rgba(255, 235, 59, 0.18);
+}
+
+.bg-gradient {
+  background: linear-gradient(135deg, #232526 0%, #1976d2 100%) !important;
+}
+
+.badge.bg-gradient {
+  background: linear-gradient(90deg, #ffeb3b 0%, #1976d2 100%) !important;
+  color: #232526 !important;
+}
+
+.card.shadow-lg {
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.18) !important;
+}
+
+/* Badge improvements */
+.badge {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Form improvements */
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+  border-color: #0d6efd;
+}
+
+input.form-control.rounded-pill, textarea.form-control.rounded-4 {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.06);
+}
+
+input.form-control.rounded-pill:focus, textarea.form-control.rounded-4:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px #1976d2;
+}
+
+.btn-primary.rounded-pill {
+  background: linear-gradient(90deg, #ffeb3b 0%, #1976d2 100%);
+  color: #232526;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 235, 59, 0.12);
+}
+.btn-primary.rounded-pill:hover {
+  background: linear-gradient(90deg, #fffde7 0%, #fff176 100%);
+  color: #232526;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .article-hero-image {
+    height: 250px;
+  }
+  
+  .display-4 {
+    font-size: 2rem;
+  }
+  
+  .display-5 {
+    font-size: 1.5rem;
+  }
+  
+  .news-image {
+    height: 180px;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading animations */
+.fade-in-article:nth-child(1) { animation-delay: 0.1s; }
+.fade-in-article:nth-child(2) { animation-delay: 0.2s; }
+.fade-in-article:nth-child(3) { animation-delay: 0.3s; }
+.fade-in-article:nth-child(4) { animation-delay: 0.4s; }
+.fade-in-article:nth-child(5) { animation-delay: 0.5s; }
+.fade-in-article:nth-child(6) { animation-delay: 0.6s; }
+
+/* Hero section improvements */
+.hero-section .btn {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hero-section .btn:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Search and filter section */
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .hero-section,
+  footer,
+  .btn,
+  .social-links {
+    display: none !important;
+  }
+  
+  .article-content {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+}
+
+/* Enhanced header and footer design for professional UI */
+.navbar {
+  background: linear-gradient(90deg, #232526 0%, #414345 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 24px rgba(35, 37, 38, 0.18);
+  border-bottom: 2px solid #ffeb3b;
+}
+
+.navbar .navbar-brand {
+  color: #ffeb3b !important;
+  font-weight: 700;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+  font-size: 1.1rem;
+  margin-right: 1rem;
+  background: linear-gradient(90deg, #3949ab 0%, #1976d2 100%);
+  border-radius: 8px;
+  padding: 0.6rem 1.3rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  border: 1px solid #ffeb3b;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+
+.navbar .nav-link:hover, .navbar .nav-link.active {
+  background: linear-gradient(90deg, #ffeb3b 0%, #fff176 100%);
+  color: #232526 !important;
+  box-shadow: 0 4px 16px rgba(255, 235, 59, 0.18);
+  border-color: #232526;
+}
+
+.navbar .nav-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffeb3b;
+}
+
+footer {
+  background: linear-gradient(90deg, #232526 0%, #414345 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 -4px 24px rgba(35, 37, 38, 0.18);
+  border-top: 2px solid #ffeb3b;
+}
+
+footer h5, footer h6 {
+  color: #ffeb3b !important;
+  font-weight: 700;
+}
+
+footer .social-links a {
+  color: #ffeb3b !important;
+  transition: color 0.2s, transform 0.2s;
+}
+
+footer .social-links a:hover {
+  color: #fff176 !important;
+  transform: scale(1.15);
+}
+
+footer .btn-primary {
+  background: linear-gradient(90deg, #ffeb3b 0%, #fff176 100%);
+  color: #232526;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 235, 59, 0.12);
+}
+
+footer .btn-primary:hover {
+  background: linear-gradient(90deg, #fffde7 0%, #fff176 100%);
+  color: #232526;
+}
+
+footer .list-unstyled a {
+  color: #fff !important;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+footer .list-unstyled a:hover {
+  color: #ffeb3b !important;
+}
