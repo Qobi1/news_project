@@ -17,6 +17,7 @@ class Event(Base):
     image_url = Column(String(500))      # original 'изображение'
     category = Column(String(100))       # original 'категория'
     link = Column(String(500))           # original 'ссылка'
+    created_at = Column(DateTime)
 
 # Connect to the database (SQLite example)
 engine = create_engine('sqlite:///events.db', echo=True)

@@ -1,14 +1,39 @@
 import requests
 from bs4 import BeautifulSoup
-import schedule
-import time
 import pytz
 from datetime import datetime
-
 from db.sql import insert_event
+from openai import OpenAI
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 BASE_URL = "https://www.irk.ru"
 MOSCOW_TZ = pytz.timezone("Asia/Tashkent")
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+print(OPENAI_API_KEY)
+client = OpenAI(api_key=OPENAI_API_KEY)
+
+def get_unique_title(text):
+    prompt = f"Перепиши заголовок события так, чтобы он оставался информативным и привлекательным, сохранив смысл и ключевые факты. Используй другие слова и выражения, сделай текст естественным для чтения на русском языке: {text}"
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": prompt}],
+        temperature=0.7
+    )
+    return response.choices[0].message.content
+
+
+def get_unique_description(text):
+    prompt = f"""Перепиши текст описания события, сохранив смысл, контекст и все ключевые факты (дата, место, имена, события). Используй разные формулировки, сделай текст более плавным и интересным для чтения на русском языке.
+Важно: все HTML-теги (<p>, <a>, <strong> и т.д.) должны остаться на месте, не изменяй и не удаляй их. Не добавляй новой информации, только перефразируй текст внутри тегов: {text}"""
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": prompt}],
+        temperature=0.7
+    )
+    return response.choices[0].message.content
 
 
 def parse_event_detail(url):
@@ -71,6 +96,9 @@ def parse_listing():
                 place, description = parse_event_detail(link_url)
             except Exception as e:
                 print(f"Ошибка при парсинге {link_url}: {e}")
+
+        title = get_unique_title(title)
+        description = get_unique_description(description)
 
         event_data = {
             "title": title,
