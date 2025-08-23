@@ -12,8 +12,7 @@ load_dotenv()
 BASE_URL = "https://www.irk.ru"
 MOSCOW_TZ = pytz.timezone("Asia/Tashkent")
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-print(OPENAI_API_KEY)
-client = OpenAI(api_key=OPENAI_API_KEY)
+
 
 def get_unique_title(text):
     prompt = f"Перепиши заголовок события так, чтобы он оставался информативным и привлекательным, сохранив смысл и ключевые факты. Используй другие слова и выражения, сделай текст естественным для чтения на русском языке: {text}"
