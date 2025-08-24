@@ -29,6 +29,8 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const backendUrl = 'http://localhost:8000';
+
   function mapApiNewsToArticle(apiNews: any): NewsArticle {
     return {
       id: apiNews.id,
@@ -43,7 +45,7 @@ const App: React.FC = () => {
   }
 
   useEffect(() => {
-    fetch('http://localhost:8000/news/')
+    fetch(`${backendUrl}/news/`)
       .then(res => res.json())
       .then(data => {
         setNewsData(data.map(mapApiNewsToArticle));
@@ -62,13 +64,18 @@ const App: React.FC = () => {
 
     if (articleId) {
       setLoading(true);
-      fetch(`http://localhost:8000/news/${encodeURIComponent(articleId)}`)
+      fetch(`${backendUrl}/news/${encodeURIComponent(articleId)}`)
         .then(res => {
           if (!res.ok) throw new Error('Статья не найдена');
           return res.json();
         })
         .then(apiNews => {
-          setCurrentArticle(mapApiNewsToArticle(apiNews));
+          // Fix: ensure date is ISO string for correct parsing
+          const fixedApiNews = {
+            ...apiNews,
+            datetime_str: apiNews.datetime_iso || apiNews.datetime_str
+          };
+          setCurrentArticle(mapApiNewsToArticle(fixedApiNews));
           setCurrentView('article');
           setLoading(false);
         })
@@ -82,11 +89,30 @@ const App: React.FC = () => {
   }, []);
 
   const handleReadMore = (article: NewsArticle) => {
-    // Update URL with article ID
+    // Always fetch fresh data from backend for details page
+    setLoading(true);
     window.history.pushState({}, '', `?id=${article.id}`);
-    setCurrentArticle(article);
-    setCurrentView('article');
-    window.scrollTo(0, 0);
+    fetch(`${backendUrl}/news/${article.id}`)
+      .then(res => {
+        if (!res.ok) throw new Error('Статья не найдена');
+        return res.json();
+      })
+      .then(apiNews => {
+        const fixedApiNews = {
+          ...apiNews,
+          datetime_str: apiNews.datetime_iso || apiNews.datetime_str
+        };
+        setCurrentArticle(mapApiNewsToArticle(fixedApiNews));
+        setCurrentView('article');
+        setLoading(false);
+        window.scrollTo(0, 0);
+      })
+      .catch((e) => {
+        setError(e.message || 'Ошибка загрузки статьи');
+        setCurrentArticle(null);
+        setCurrentView('home');
+        setLoading(false);
+      });
   };
 
   const handleBackToHome = () => {
@@ -167,6 +193,17 @@ const App: React.FC = () => {
             </a>
           </div>
         </nav>
+        {/* Breadcrumbs for Article Detail Page */}
+        <div className="container mt-3">
+          <nav aria-label="breadcrumb">
+            <ol className="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+              <li className="breadcrumb-item">
+                <a href="#" onClick={handleBackToHome} style={{ textDecoration: 'none', color: '#007bff' }}>Главная</a>
+              </li>
+              <li className="breadcrumb-item active" aria-current="page">{currentArticle.title}</li>
+            </ol>
+          </nav>
+        </div>
 
         {/* Article Detail View */}
         <main className="py-4">

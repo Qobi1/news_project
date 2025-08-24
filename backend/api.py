@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from typing import List
 from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
@@ -58,6 +58,15 @@ def get_news(db: Session = Depends(get_db)):
         .limit(20)
         .all()
     )
+    if not events:
+        yesterday = today - timedelta(days=1)
+        events = (
+            db.query(Event)
+            .filter(func.date(Event.created_at) == yesterday)
+            .order_by(Event.id.desc())
+            .limit(20)
+            .all()
+        )
     return events
 
 
