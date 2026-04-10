@@ -1,0 +1,935 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {% set month_names =
+    {1:'январь',2:'февраль',3:'март',4:'апрель',5:'май',6:'июнь',7:'июль',8:'август',9:'сентябрь',10:'октябрь',11:'ноябрь',12:'декабрь'}
+    %} {% set month_name = month_names.get(month, month) %}
+
+    <title>
+      Куда сходить в Иркутске на выходных — {{ month_name|capitalize }}, {{ year
+      }}
+    </title>
+    <meta
+      name="description"
+      content="Свежая афиша Иркутска на выходные ({{ month_name }} {{ year }}): топ-события, бесплатные варианты, семейные активности и билеты."
+    />
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Куда сходить в Иркутске на выходных — {{ month_name|capitalize }}, {{ year }}"
+    />
+    <meta
+      property="og:description"
+      content="Свежая афиша Иркутска на выходные ({{ month_name }} {{ year }}): топ-события, бесплатные варианты, семейные активности и билеты."
+    />
+    <meta property="og:type" content="website" />
+
+    <meta
+      property="og:url"
+      content="https://afisha.bestjourneymap.com/weekend/irkutsk-{{ year }}-{{ month_padded }}/"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Куда сходить в Иркутске на выходных — {{ month_name|capitalize }}, {{ year }}"
+    />
+    <meta
+      name="twitter:description"
+      content="Свежая афиша Иркутска на выходные ({{ month_name }} {{ year }}): топ-события, бесплатные варианты, семейные активности и билеты."
+    />
+    <meta
+      name="twitter:image"
+      content="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+    />
+    <meta
+      property="og:image"
+      content="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+    />
+
+    {% set month_padded = '%02d' % month %}
+    <link
+      rel="canonical"
+      href="https://afisha.bestjourneymap.com/weekend/irkutsk-{{ year }}-{{ month_padded }}/"
+    />
+    <meta property="og:locale" content="ru_RU" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://afisha.bestjourneymap.com/#website",
+        "name": "Афиша Иркутска",
+        "url": "https://afisha.bestjourneymap.com/",
+        "inLanguage": "ru-RU",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://afisha.bestjourneymap.com/search?q={query}",
+          "query-input": "required name=query"
+        }
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://afisha.bestjourneymap.com/#org",
+        "name": "Афиша Иркутска",
+        "url": "https://afisha.bestjourneymap.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://afisha.bestjourneymap.com/assets/images/og-image.png",
+          "width": 1200,
+          "height": 630
+        },
+        "sameAs": [
+          "https://t.me/...",
+          "https://vk.com/...",
+          "https://www.youtube.com/@..."
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Афиша Иркутска",
+            "item": "https://afisha.bestjourneymap.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Выходные",
+            "item": "https://afisha.bestjourneymap.com/weekend/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "{{ month_name|capitalize }} {{ year }}",
+            "item": "https://afisha.bestjourneymap.com/weekend/irkutsk-{{ year }}-{{ month_padded }}/"
+          }
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "url": "https://afisha.bestjourneymap.com/weekend/irkutsk-{{ year }}-{{ month_padded }}/",
+        "name": "Выходные в Иркутске -- {{ month_name|capitalize }}, {{ year }}",
+        "description": "Подборка событий на выходные в Иркутске: концерты, театр, кино, выставки, семейные активности за 2026.",
+        "inLanguage": "ru-RU",
+        "isPartOf": { "@id": "https://afisha.bestjourneymap.com/#website" },
+        "publisher": { "@id": "https://afisha.bestjourneymap.com/#org" },
+        "about": [
+          "выходные в Иркутске",
+          "куда сходить в Иркутске",
+          "бесплатные события",
+          "семейные мероприятия"
+        ],
+        "keywords": "выходные в Иркутске, куда сходить в Иркутске, бесплатные события, семейные мероприятия"
+      }
+    </script>
+
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/assets/images/favicon-16x16.png"
+    />
+
+    <!-- CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header>
+      <nav class="navbar navbar-expand-lg sticky-top shadow">
+        <div class="container-fluid">
+          <a href="/" class="navbar-brand fw-bold fs-3">
+            <i class="bi bi-newspaper fs-3 me-2"></i>Афиша Иркутска
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="py-5 flex-grow-1">
+      <div class="container-fluid">
+        <!-- H1 -->
+        <div class="row mb-4">
+          <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold">
+              Что делать в Иркутске на выходных — {{ month_name|capitalize }},
+              {{ year }}
+            </h1>
+          </div>
+        </div>
+
+        {# Build unique day tags #} {% set ns = namespace(days=[]) %} {% for
+        item in data %} {% if item.day and item.day not in ns.days %} {% set
+        ns.days = ns.days + [item.day] %} {% endif %} {% endfor %} {% if ns.days
+        and ns.days|length > 0 %}
+        <div class="row mb-4">
+          <div class="col-12">
+            <div
+              class="d-flex flex-wrap gap-2 justify-content-center"
+              id="dayFilters"
+            >
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary rounded-pill active"
+                data-filter="all"
+              >
+                Все
+              </button>
+              {% for d in ns.days %}
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary rounded-pill"
+                data-filter="{{ d }}"
+              >
+                {{ d }}
+              </button>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Weekend cards grid (4 per row on large screens) -->
+        <section class="mb-5">
+          <div class="row g-4" id="weekendCardsGrid">
+            {% if data and data|length > 0 %} {% for item in data %}
+            <div
+              class="col-12 col-sm-6 col-lg-3"
+              data-day="{{ item.day|default('') }}"
+            >
+              <div
+                class="card h-100 shadow-sm"
+                data-name="{{ item.title|default('') }}"
+                data-url="{% if item.slug %}{{ request.base_url }}{{ item.slug }}/{% else %}#{% endif %}"
+                data-image="{{ item.image_path if item.image_path else 'assets/images/event-fallback.jpg' }}"
+                data-start=""
+                data-end=""
+                data-venue-name="{{ item.place|default('Иркутск') }}"
+                data-venue-address="Иркутск, Россия"
+                {%
+                if
+                item.price
+                %}data-price="{{ item.price }}"
+                {%
+                endif
+                %}
+              >
+                {% if item.image_path %}
+                <a
+                  href="{% if item.slug %}{{ request.base_url }}{{ item.slug }}/{% else %}#{% endif %}"
+                  class="text-decoration-none"
+                >
+                  <div class="ratio ratio-16x9 overflow-hidden rounded-top">
+                    <img
+                      src="{{ item.image_path }}"
+                      class="w-100 h-100 object-fit-cover"
+                      alt="{{ item.title|default('') }}"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </a>
+                {% else %}
+                <div
+                  class="ratio ratio-16x9 overflow-hidden rounded-top bg-light d-flex align-items-center justify-content-center"
+                >
+                  <i class="bi bi-image text-muted" style="font-size: 2rem"></i>
+                </div>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                  <div class="mb-2">
+                    {% if item.day %}
+                    <button
+                      type="button"
+                      class="badge text-bg-primary border-0 js-day-link me-2"
+                      data-filter="{{ item.day }}"
+                    >
+                      {{ item.day }}
+                    </button>
+                    {% endif %} {% if item.date_str %}
+                    <span class="badge text-bg-secondary"
+                      >{{ item.date_str }}</span
+                    >
+                    {% endif %}
+                  </div>
+                  {% if item.title %}
+                  <h5 class="card-title">
+                    <a
+                      href="{% if item.slug %}{{ request.base_url }}{{ item.slug }}/{% else %}#{% endif %}"
+                      class="stretched-link text-decoration-none text-dark"
+                      >{{ item.title }}</a
+                    >
+                  </h5>
+                  {% endif %} {% if item.description %}
+                  <p class="card-text text-muted">{{ item.description }}</p>
+                  {% endif %}
+
+                  <div class="mt-auto">
+                    {% if item.slug %}
+                    <a
+                      class="btn btn-outline-primary btn-sm"
+                      href="{{ request.base_url }}{{ item.slug }}/"
+                      >Открыть</a
+                    >
+                    {% elif item.full_description_html or item.schedules_html %}
+                    <button
+                      class="btn btn-outline-primary btn-sm"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#details-{{ item.id }}"
+                      aria-expanded="false"
+                      aria-controls="details-{{ item.id }}"
+                    >
+                      Подробнее
+                    </button>
+                    <div id="details-{{ item.id }}" class="collapse mt-2">
+                      {% if item.full_description_html %}
+                      <div class="small">
+                        {{ item.full_description_html|safe }}
+                      </div>
+                      {% endif %} {% if item.schedules_html %}
+                      <div class="small mt-2">
+                        {{ item.schedules_html|safe }}
+                      </div>
+                      {% endif %}
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %} {% else %}
+            <div class="col-12">
+              <div class="alert alert-info">
+                Пока нет событий на выбранные выходные.
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </section>
+
+        <section id="faq" class="mb-5">
+          <div class="row justify-content-center">
+            <div class="col-lg-8">
+              <h2 class="h4 fw-bold mb-3">FAQ — выходные в Иркутске</h2>
+              <div class="accordion" id="weekendFaq">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q1">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a1"
+                      aria-expanded="true"
+                      aria-controls="a1"
+                    >
+                      Как добавить своё мероприятие в Афишу Иркутска?
+                    </button>
+                  </h2>
+                  <div
+                    id="a1"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q1"
+                    data-bs-parent="#weekendFaq"
+                  >
+                    <div class="accordion-body">
+                      Чтобы ваше событие появилось в календаре, отправьте
+                      описание, дату, место и афишу на
+                      <a href="mailto:info@bestjourneymap.com"
+                        >info@bestjourneymap.com</a
+                      >. Мы проверим данные и добавим мероприятие в течение
+                      суток.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q2">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a2"
+                      aria-expanded="true"
+                      aria-controls="a2"
+                    >
+                      Как часто обновляется календарь событий?
+                    </button>
+                  </h2>
+                  <div
+                    id="a2"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q2"
+                  >
+                    <div class="accordion-body">
+                      Календарь обновляется ежедневно. Новые концерты,
+                      спектакли, выставки и фестивали появляются автоматически
+                      по мере поступления официальной информации от
+                      организаторов.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q3">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a3"
+                      aria-expanded="true"
+                      aria-controls="a3"
+                    >
+                      Можно ли купить билеты прямо через сайт?
+                    </button>
+                  </h2>
+                  <div
+                    id="a3"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q3"
+                  >
+                    <div class="accordion-body">
+                      Афиша Иркутска — информационный агрегатор. Мы не продаём
+                      билеты напрямую, но в карточке каждого события указаны
+                      официальные ссылки на площадки и кассы, где можно оформить
+                      покупку.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q4">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a4"
+                      aria-expanded="true"
+                      aria-controls="a4"
+                    >
+                      Как проверить актуальность события?
+                    </button>
+                  </h2>
+                  <div
+                    id="a4"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q4"
+                  >
+                    <div class="accordion-body">
+                      Мы стараемся публиковать только подтверждённые
+                      мероприятия, однако рекомендуем перед посещением уточнять
+                      детали на сайте организатора или в соцсетях площадки —
+                      ссылки размещены в описании.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q5">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a5"
+                      aria-expanded="true"
+                      aria-controls="a5"
+                    >
+                      Какие события можно найти на сайте?
+                    </button>
+                  </h2>
+                  <div
+                    id="a5"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q5"
+                  >
+                    <div class="accordion-body">
+                      На сайте представлены концерты, театральные постановки,
+                      выставки, фестивали, детские мероприятия и городские
+                      праздники в Иркутске и области.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q6">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a6"
+                      aria-expanded="true"
+                      aria-controls="a6"
+                    >
+                      Как выбрать мероприятия на определённую дату?
+                    </button>
+                  </h2>
+                  <div
+                    id="a6"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q6"
+                  >
+                    <div class="accordion-body">
+                      Выберите нужный день в интерактивном календаре сверху
+                      страницы. Сервис автоматически покажет все события,
+                      запланированные на выбранную дату.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q7">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a7"
+                      aria-expanded="true"
+                      aria-controls="a7"
+                    >
+                      Можно ли использовать данные календаря на своём сайте?
+                    </button>
+                  </h2>
+                  <div
+                    id="a7"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q7"
+                  >
+                    <div class="accordion-body">
+                      Да, при указании активной ссылки на источник
+                      afisha.bestjourneymap.com. Мы открыты к партнёрствам и
+                      готовы предоставить виджет с актуальными событиями для
+                      вашего ресурса.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="q8">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#a8"
+                      aria-expanded="true"
+                      aria-controls="a8"
+                    >
+                      Как связаться с администрацией проекта?
+                    </button>
+                  </h2>
+                  <div
+                    id="a8"
+                    class="accordion-collapse collapse show"
+                    aria-labelledby="q8"
+                  >
+                    <div class="accordion-body">
+                      Вы можете написать нам по адресу info@bestjourneymap.com.
+                      Мы постараемся ответить в течение рабочего дня.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-gradient text-white mt-auto">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3" style="color: #ffeb3b">
+              <i class="bi bi-newspaper fs-4 me-2"></i>Афиша Иркутска
+            </h5>
+            <p class="mb-3">
+              <b>Афиша Иркутска</b> — концерты, кино, спектакли, фестивали,
+              выставки, детские мероприятия. Мы делаем город ближе к вам —
+              планируйте свой досуг легко и удобно!
+            </p>
+            <!-- Партнёр. Start -->
+            <div class="mb-3">
+              <h6>Партнер проекта</h6>
+              <p>
+                Хотите посетить все эти места? Возьмите автомобиль в аренду у
+                нашего партнера:
+                <a
+                  href="https://i-carrent.ru/catalog/arenda/"
+                  style="color: white"
+                  rel="sponsored"
+                  >Аренда автомобилей в Иркутске</a
+                >
+              </p>
+            </div>
+            <!-- Партнёр. End -->
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">Быстрые ссылки</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a
+                  href="#home"
+                  class="text-white text-decoration-none"
+                  onclick="handleSmoothScroll('home')"
+                >
+                  Главная
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#news"
+                  class="text-white text-decoration-none"
+                  onclick="handleSmoothScroll('news')"
+                >
+                  События Иркутска
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  class="text-white text-decoration-none"
+                  onclick="handleSmoothScroll('about')"
+                >
+                  О нас
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">
+              Хотите быть в курсе событий Иркутска?
+            </h6>
+            <p class="mb-3" style="color: #fff">
+              Подпишитесь и получайте обновления афиши: концерты, театр, кино,
+              фестивали и выставки.
+            </p>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0" style="color: #fff">
+              © 2026 Афиша Иркутска. Все права защищены.
+            </p>
+            <p class="mb-0" style="color: #aaa; font-size: 13px">
+              <b>Отказ от ответственности:</b> Вся информация, размещённая на
+              сайте, носит ознакомительный и информационный характер.
+              Администрация проекта не несет ответственности за возможные
+              изменения в расписании, отмену мероприятий, неточности или
+              действия организаторов. Для получения актуальной информации
+              рекомендуем обращаться к официальным источникам и площадкам
+              проведения событий.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a
+              href="/docs/privacy.doc"
+              class="text-white text-decoration-none me-3"
+            >
+              Политика конфиденциальности
+            </a>
+            <a
+              href="/docs/terms.doc"
+              class="text-white text-decoration-none me-3"
+            >
+              Условия использования
+            </a>
+            <a href="/docs/cookies.doc" class="text-white text-decoration-none">
+              Политика файлов cookie
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      (function () {
+        var filterBar = document.getElementById("dayFilters");
+        if (!filterBar) return;
+        var buttons = filterBar.querySelectorAll("button[data-filter]");
+        var cards = document.querySelectorAll(
+          "#weekendCardsGrid > div[data-day]",
+        );
+        function applyFilter(value) {
+          buttons.forEach(function (b) {
+            b.classList.toggle(
+              "active",
+              b.getAttribute("data-filter") === value ||
+                (value === "all" && b.getAttribute("data-filter") === "all"),
+            );
+          });
+          cards.forEach(function (card) {
+            var day = (card.getAttribute("data-day") || "").trim();
+            var show = value === "all" || day === value;
+            card.style.display = show ? "" : "none";
+          });
+        }
+        filterBar.addEventListener("click", function (e) {
+          var t = e.target.closest("button[data-filter]");
+          if (!t) return;
+          applyFilter(t.getAttribute("data-filter"));
+        });
+        document
+          .querySelectorAll(".js-day-link[data-filter]")
+          .forEach(function (el) {
+            el.addEventListener("click", function () {
+              applyFilter(el.getAttribute("data-filter"));
+            });
+          });
+      })();
+    </script>
+    <script>
+      (function () {
+        var DEFAULT_YEAR =
+          parseInt("{{ year }}", 10) || new Date().getFullYear();
+        var MONTHS = {
+          января: "01",
+          февраля: "02",
+          марта: "03",
+          апреля: "04",
+          мая: "05",
+          июня: "06",
+          июля: "07",
+          августа: "08",
+          сентября: "09",
+          октября: "10",
+          ноября: "11",
+          декабря: "12",
+        };
+        function pad2(n) {
+          n = parseInt(n, 10);
+          if (isNaN(n)) return null;
+          return String(n).padStart(2, "0");
+        }
+        function parsePartToISO(part, fallbackYear) {
+          if (!part) return null;
+          var s = part.toLowerCase().trim().replace(/\s+/g, " ");
+          var yearMatch = s.match(/(\d{4})/);
+          var y = yearMatch ? yearMatch[1] : String(fallbackYear);
+          // remove year from string to isolate day+month
+          if (yearMatch) s = s.replace(yearMatch[1], "").trim();
+          var mName = Object.keys(MONTHS).find(function (k) {
+            return s.indexOf(k) !== -1;
+          });
+          if (!mName) return null;
+          var m = MONTHS[mName];
+          var dayMatch = s.match(/(\d{1,2})/);
+          var d = dayMatch ? pad2(dayMatch[1]) : null;
+          if (!y || !m || !d) return null;
+          return y + "-" + m + "-" + d;
+        }
+        function parseRange(str) {
+          if (!str) return { start: null, end: null };
+          var txt = String(str).replace(/[—–]+/g, "-");
+          var parts = txt.split("-");
+          if (parts.length === 1) {
+            var single = parsePartToISO(parts[0], DEFAULT_YEAR);
+            return { start: single, end: single };
+          }
+          // normalize whitespace around hyphen
+          var left = parts[0].trim();
+          var right = parts.slice(1).join("-").trim();
+          // if right contains year, use it for left
+          var rightYear = (right.match(/(\d{4})/) || [])[1];
+          var startISO = parsePartToISO(left, rightYear || DEFAULT_YEAR);
+          var endISO = parsePartToISO(right, DEFAULT_YEAR);
+          return { start: startISO, end: endISO };
+        }
+        var cards = document.querySelectorAll("#weekendCardsGrid .card.h-100");
+        cards.forEach(function (card) {
+          var badge = card.querySelector(".badge.text-bg-secondary");
+          if (!badge) return;
+          var text = badge.textContent || "";
+          var r = parseRange(text);
+          var curStart = card.getAttribute("data-start");
+          var curEnd = card.getAttribute("data-end");
+          if (!curStart && r.start) card.setAttribute("data-start", r.start);
+          if (!curEnd && r.end) card.setAttribute("data-end", r.end);
+        });
+      })();
+    </script>
+    <script>
+      (function () {
+        var cards = document.querySelectorAll("#weekendCardsGrid .card.h-100");
+        if (!cards.length) return;
+
+        var items = [];
+        var pos = 1;
+
+        cards.forEach(function (card) {
+          var name = card.getAttribute("data-name");
+          var url = card.getAttribute("data-url");
+          var image = card.getAttribute("data-image");
+          var start = card.getAttribute("data-start");
+          var end = card.getAttribute("data-end");
+          var venueName = card.getAttribute("data-venue-name") || "Иркутск";
+          var venueAddr =
+            card.getAttribute("data-venue-address") || "Иркутск, Россия";
+          var price = card.getAttribute("data-price"); // "0" = бесплатно
+
+          if (!name || !url) return;
+
+          var event = {
+            "@type": "Event",
+            name: name,
+            url: url,
+            image: image,
+            eventStatus: "https://schema.org/EventScheduled",
+            startDate: start || undefined,
+            endDate: end || undefined,
+            inLanguage: "ru-RU",
+            location: {
+              "@type": "Place",
+              name: venueName,
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Иркутск",
+                addressCountry: "RU",
+                streetAddress: venueAddr,
+              },
+            },
+          };
+
+          if (price === "0") {
+            event.offers = {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "RUB",
+              url: url,
+              availability: "https://schema.org/InStock",
+            };
+          }
+
+          items.push({
+            "@type": "ListItem",
+            position: pos++,
+            url: url,
+            item: event,
+          });
+        });
+
+        if (!items.length) return;
+
+        var ld = {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          itemListOrder: "http://schema.org/ItemListOrderAscending",
+          name: "События выходных в Иркутске -- {{ month_name|capitalize }} {{ year }}",
+          itemListElement: items,
+        };
+
+        var s = document.createElement("script");
+        s.type = "application/ld+json";
+        s.textContent = JSON.stringify(ld);
+        document.body.appendChild(s);
+      })();
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Как добавить своё мероприятие в Афишу Иркутска?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Чтобы ваше событие появилось в календаре, отправьте описание, дату, место и афишу на info@bestjourneymap.com. Мы проверим данные и добавим мероприятие в течение суток."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как часто обновляется календарь событий?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Календарь обновляется ежедневно. Новые концерты, спектакли, выставки и фестивали появляются автоматически по мере поступления официальной информации от организаторов."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли купить билеты прямо через сайт?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Афиша Иркутска — информационный агрегатор. Мы не продаём билеты напрямую, но в карточке каждого события указаны официальные ссылки на площадки и кассы, где можно оформить покупку."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как проверить актуальность события?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Мы стараемся публиковать только подтверждённые мероприятия, однако рекомендуем перед посещением уточнять детали на сайте организатора или в соцсетях площадки — ссылки размещены в описании."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Какие события можно найти на сайте?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "На сайте представлены концерты, театральные постановки, выставки, фестивали, детские мероприятия и городские праздники в Иркутске и области."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как выбрать мероприятия на определённую дату?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Выберите нужный день в интерактивном календаре сверху страницы. Сервис автоматически покажет все события, запланированные на выбранную дату."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли использовать данные календаря на своём сайте?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да, при указании активной ссылки на источник afisha.bestjourneymap.com. Мы открыты к партнёрствам и готовы предоставить виджет с актуальными событиями для вашего ресурса."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как связаться с администрацией проекта?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Вы можете написать нам по адресу info@bestjourneymap.com. Мы постараемся ответить в течение рабочего дня."
+            }
+          }
+        ]
+      }
+    </script>
+  </body>
+</html>

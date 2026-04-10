@@ -1,0 +1,21 @@
+[0;1;32m●[0m news_project.service - News Website Backend (FastAPI)
+     Loaded: loaded (/etc/systemd/system/news_project.service; enabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Wed 2025-09-10 22:34:23 MSK; 9min ago
+   Main PID: 3406657 (gunicorn)
+      Tasks: 4 (limit: 9443)
+     Memory: 58.0M
+        CPU: 2.161s
+     CGroup: /system.slice/news_project.service
+             ├─3406657 /var/www/news_website/backend/venv/bin/python /var/www/news_website/backend/venv/bin/gunicorn -w 1 -k uvicorn.workers.UvicornWorker api:app --bind 127.0.0.1:8000 --log-level debug --access-logfile - --error-logfile -
+             └─3406658 /var/www/news_website/backend/venv/bin/python /var/www/news_website/backend/venv/bin/gunicorn -w 1 -k uvicorn.workers.UvicornWorker api:app --bind 127.0.0.1:8000 --log-level debug --access-logfile - --error-logfile -
+
+Sep 10 22:42:50 3051887-qh93490 gunicorn[3406658]: 90.156.160.59:0 - "GET /api/news/ HTTP/1.0" 404
+Sep 10 22:42:51 3051887-qh93490 gunicorn[3406658]: 90.156.160.59:0 - "GET /api/news/ HTTP/1.0" 404
+Sep 10 22:42:51 3051887-qh93490 gunicorn[3406658]: 90.156.160.59:0 - "GET /api/news/ HTTP/1.0" 404
+Sep 10 22:42:51 3051887-qh93490 gunicorn[3406658]: 90.156.160.59:0 - "GET /api/news/ HTTP/1.0" 404
+Sep 10 22:42:51 3051887-qh93490 gunicorn[3406658]: 90.156.160.59:0 - "GET /api/news/ HTTP/1.0" 404
+Sep 10 22:42:52 3051887-qh93490 gunicorn[3406658]: 90.156.160.59:0 - "GET /api/news/ HTTP/1.0" 404
+Sep 10 22:42:59 3051887-qh93490 gunicorn[3406658]: 90.156.160.59:0 - "GET /api/docs HTTP/1.0" 404
+Sep 10 22:43:21 3051887-qh93490 gunicorn[3406658]: 147.45.187.40:0 - "GET /api/categories/ HTTP/1.0" 404
+Sep 10 22:43:21 3051887-qh93490 gunicorn[3406658]: 147.45.187.40:0 - "GET /api/news/ HTTP/1.0" 404
+Sep 10 22:43:25 3051887-qh93490 gunicorn[3406658]: 3.222.232.239:0 - "GET /api/placeholder/1200/630 HTTP/1.0" 404

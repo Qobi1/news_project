@@ -1,0 +1,972 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Календарь событий 2026 — {{ city|default('Иркутск') }} — {{
+      year|default('') }}
+    </title>
+    <meta
+      name="description"
+      content="Календарь событий: выберите дату, чтобы увидеть мероприятия в Иркутске."
+    />
+
+    <meta property="og:title" content="Календарь событий — Афиша Иркутска" />
+    <meta
+      property="og:description"
+      content="Календарь событий: выберите дату, чтобы увидеть мероприятия в Иркутске."
+    />
+    <meta property="og:type" content="website" />
+    <link
+      rel="canonical"
+      href="https://afisha.bestjourneymap.com/calendar/irkutsk-2026"
+    />
+    <meta
+      property="og:url"
+      content="https://afisha.bestjourneymap.com/calendar/irkutsk-2026"
+    />
+    <meta property="og:locale" content="ru_RU" />
+    <meta
+      property="og:image"
+      content="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Календарь событий — Афиша Иркутска" />
+    <meta
+      name="twitter:description"
+      content="Календарь событий: выберите дату, чтобы увидеть мероприятия в Иркутске."
+    />
+    <meta
+      name="twitter:image"
+      content="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Афиша Иркутска",
+        "url": "https://afisha.bestjourneymap.com/",
+        "inLanguage": "ru-RU",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://afisha.bestjourneymap.com/search?q={query}",
+          "query-input": "required name=query"
+        }
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Афиша Иркутска",
+        "url": "https://afisha.bestjourneymap.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://afisha.bestjourneymap.com/assets/images/og-image.png",
+          "width": 1200,
+          "height": 630
+        }
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Афиша Иркутска",
+            "item": "https://afisha.bestjourneymap.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Календарь",
+            "item": "https://afisha.bestjourneymap.com/calendar/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Иркутск -- 2026",
+            "item": "https://afisha.bestjourneymap.com/calendar/irkutsk-2026"
+          }
+        ]
+      }
+    </script>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "url": "https://afisha.bestjourneymap.com/calendar/irkutsk-2026",
+        "name": "Календарь событий — Иркутск — 2026",
+        "description": "Календарь событий: выберите дату, чтобы увидеть мероприятия в Иркутске.",
+        "inLanguage": "ru-RU",
+        "about": [
+          "события Иркутска",
+          "афиша Иркутск 2026",
+          "куда сходить",
+          "календарь мероприятий"
+        ],
+        "keywords": "события Иркутск, афиша Иркутска, календарь событий 2026",
+        "isPartOf": {
+          "@type": "WebSite",
+          "url": "https://afisha.bestjourneymap.com/"
+        }
+      }
+    </script>
+
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/assets/images/favicon-16x16.png"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+
+    <style>
+      .calendar-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        overflow: hidden; /* no scrollbar */
+        padding: 0 16px; /* side space */
+      }
+      .month-label {
+        align-self: center;
+        font-weight: 700;
+        color: #6c757d;
+        padding: 0 4px;
+        flex: 0 0 auto;
+      }
+
+      .calendar-item {
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #212529;
+        min-height: 84px;
+        padding: 8px 6px;
+        flex: 1 1 0;
+      }
+      .calendar-item:hover {
+        border-color: #0d6efd;
+        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.12);
+        transform: translateY(-1px);
+      }
+      .calendar-item.active {
+        border-color: #0d6efd;
+        background: linear-gradient(90deg, #ffeb3b 0%, #fff176 100%);
+        color: #232526;
+        font-weight: 600;
+      }
+      .calendar-item.selected {
+        border-color: #0d6efd;
+        background: #e7f1ff;
+        color: #232526;
+        font-weight: 600;
+      }
+      .calendar-item.in-range {
+        background: #fff7c2;
+      }
+      .calendar-daynum {
+        font-size: 1.25rem;
+        line-height: 1;
+      }
+      .calendar-dow {
+        font-size: 0.8rem;
+        color: #6c757d;
+      }
+      .calendar-item.active .calendar-dow {
+        color: #232526;
+      }
+    </style>
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <nav class="navbar navbar-expand-lg sticky-top shadow">
+        <div class="container-fluid">
+          <a href="/" class="navbar-brand fw-bold fs-3">
+            <i class="bi bi-newspaper fs-3 me-2"></i>Афиша Иркутска
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="py-5 flex-grow-1">
+      <div class="container-fluid">
+        <div class="row mb-4">
+          <div class="col-12 text-center">
+            <h1 class="display-6 fw-bold">
+              Календарь событий 2026 — {{ city|default('Иркутск') }}
+            </h1>
+            <p class="text-muted mb-0">
+              Свежие события за сегодня по дате добавления
+            </p>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col-12">
+            <div
+              class="calendar-row"
+              id="calendarRow"
+              aria-label="Мини-календарь"
+            ></div>
+          </div>
+        </div>
+
+        {% if events and events|length > 0 %}
+        <section class="mb-4">
+          <div class="row g-3" id="eventsList">
+            {% set ns = namespace(last_date_str=None) %} {% for e in events %}
+            {% if not (start and end) %} {% set date_str =
+            e.created_at.strftime('%d %B %Y') if e.created_at else '' %} {% if
+            ns.last_date_str != date_str %}
+            <div class="col-12 mt-2">
+              <h2 class="h5 text-muted fw-semibold mb-2">{{ date_str }}</h2>
+            </div>
+            {% set ns.last_date_str = date_str %} {% endif %} {% endif %}
+
+            <div class="col-12 col-sm-6 col-lg-3">
+              <div class="card h-100 shadow-sm">
+                {% if e.image %}
+                <a
+                  href="/calendar/event/{{ e.id }}"
+                  class="text-decoration-none"
+                >
+                  <div class="ratio ratio-16x9 overflow-hidden rounded-top">
+                    <img
+                      src="{{ e.image }}"
+                      class="w-100 h-100 object-fit-cover"
+                      alt="{{ e.title|default('') }}"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                </a>
+                {% else %}
+                <a
+                  href="/calendar/event/{{ e.id }}"
+                  class="text-decoration-none"
+                >
+                  <div
+                    class="ratio ratio-16x9 overflow-hidden rounded-top bg-light d-flex align-items-center justify-content-center"
+                  >
+                    <i
+                      class="bi bi-image text-muted"
+                      style="font-size: 2rem"
+                    ></i>
+                  </div>
+                </a>
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                  <div class="mb-2 d-flex flex-wrap gap-2 align-items-center">
+                    {% if e.age %}<span class="badge text-bg-secondary"
+                      >{{ e.age }}</span
+                    >{% endif %} {% if e.rating %}<span
+                      class="badge text-bg-warning"
+                      >IMDb: {{ e.rating }}</span
+                    >{% endif %} {% if e.genres %}<span
+                      class="badge text-bg-light border"
+                      >{{ e.genres }}</span
+                    >{% endif %}
+                  </div>
+                  {% if e.title %}
+                  <h5 class="card-title fw-bold mb-2">{{ e.title }}</h5>
+                  {% endif %} {% if e.description %}
+                  <p
+                    class="card-text text-muted"
+                    style="
+                      display: -webkit-box;
+                      -webkit-line-clamp: 4;
+                      -webkit-box-orient: vertical;
+                      overflow: hidden;
+                    "
+                  >
+                    {{ e.description }}
+                  </p>
+                  {% endif %}
+                  <div
+                    class="mt-auto d-flex justify-content-between align-items-center"
+                  >
+                    {% if e.rating %}
+                    <small class="text-muted">
+                      <i class="bi bi-star-fill text-warning me-1"></i>{{
+                      e.rating }}
+                    </small>
+                    {% else %}
+                    <span></span>
+                    {% endif %}
+                    <a
+                      href="/calendar/event/{{ e.id }}"
+                      class="btn btn-sm btn-outline-primary"
+                      >Открыть</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+        {% else %}
+        <div class="row">
+          <div class="col-12">
+            <div class="alert alert-info" role="alert">
+              {% if start and end %} За выбранный период событий не найдено.
+              Попробуйте изменить диапазон дат. {% else %} Пока нет событий,
+              добавленных сегодня. Загляните позже или выберите дату выше. {%
+              endif %}
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </main>
+
+    <section id="faq" class="mb-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="h4 fw-bold mb-3">FAQ</h2>
+          <div class="accordion" id="weekendFaq">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q1">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a1"
+                  aria-expanded="true"
+                  aria-controls="a1"
+                >
+                  Как добавить своё мероприятие в Афишу Иркутска?
+                </button>
+              </h2>
+              <div
+                id="a1"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q1"
+                data-bs-parent="#weekendFaq"
+              >
+                <div class="accordion-body">
+                  Чтобы ваше событие появилось в календаре, отправьте описание,
+                  дату, место и афишу на
+                  <a href="mailto:info@bestjourneymap.com"
+                    >info@bestjourneymap.com</a
+                  >. Мы проверим данные и добавим мероприятие в течение суток.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q2">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a2"
+                  aria-expanded="true"
+                  aria-controls="a2"
+                >
+                  Как часто обновляется календарь событий?
+                </button>
+              </h2>
+              <div
+                id="a2"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q2"
+              >
+                <div class="accordion-body">
+                  Календарь обновляется ежедневно. Новые концерты, спектакли,
+                  выставки и фестивали появляются автоматически по мере
+                  поступления официальной информации от организаторов.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q3">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a3"
+                  aria-expanded="true"
+                  aria-controls="a3"
+                >
+                  Можно ли купить билеты прямо через сайт?
+                </button>
+              </h2>
+              <div
+                id="a3"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q3"
+              >
+                <div class="accordion-body">
+                  Афиша Иркутска — информационный агрегатор. Мы не продаём
+                  билеты напрямую, но в карточке каждого события указаны
+                  официальные ссылки на площадки и кассы, где можно оформить
+                  покупку.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q4">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a4"
+                  aria-expanded="true"
+                  aria-controls="a4"
+                >
+                  Как проверить актуальность события?
+                </button>
+              </h2>
+              <div
+                id="a4"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q4"
+              >
+                <div class="accordion-body">
+                  Мы стараемся публиковать только подтверждённые мероприятия,
+                  однако рекомендуем перед посещением уточнять детали на сайте
+                  организатора или в соцсетях площадки — ссылки размещены в
+                  описании.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q5">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a5"
+                  aria-expanded="true"
+                  aria-controls="a5"
+                >
+                  Какие события можно найти на сайте?
+                </button>
+              </h2>
+              <div
+                id="a5"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q5"
+              >
+                <div class="accordion-body">
+                  На сайте представлены концерты, театральные постановки,
+                  выставки, фестивали, детские мероприятия и городские праздники
+                  в Иркутске и области.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q6">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a6"
+                  aria-expanded="true"
+                  aria-controls="a6"
+                >
+                  Как выбрать мероприятия на определённую дату?
+                </button>
+              </h2>
+              <div
+                id="a6"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q6"
+              >
+                <div class="accordion-body">
+                  Выберите нужный день в интерактивном календаре сверху
+                  страницы. Сервис автоматически покажет все события,
+                  запланированные на выбранную дату.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q7">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a7"
+                  aria-expanded="true"
+                  aria-controls="a7"
+                >
+                  Можно ли использовать данные календаря на своём сайте?
+                </button>
+              </h2>
+              <div
+                id="a7"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q7"
+              >
+                <div class="accordion-body">
+                  Да, при указании активной ссылки на источник
+                  afisha.bestjourneymap.com. Мы открыты к партнёрствам и готовы
+                  предоставить виджет с актуальными событиями для вашего
+                  ресурса.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="q8">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#a8"
+                  aria-expanded="true"
+                  aria-controls="a8"
+                >
+                  Как связаться с администрацией проекта?
+                </button>
+              </h2>
+              <div
+                id="a8"
+                class="accordion-collapse collapse show"
+                aria-labelledby="q8"
+              >
+                <div class="accordion-body">
+                  Вы можете написать нам по адресу info@bestjourneymap.com. Мы
+                  постараемся ответить в течение рабочего дня.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="py-5 bg-gradient text-white mt-auto">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3" style="color: #ffeb3b">
+              <i class="bi bi-newspaper fs-4 me-2"></i>Афиша Иркутска
+            </h5>
+            <p class="mb-3">
+              <b>Афиша Иркутска</b> — концерты, кино, спектакли, фестивали,
+              выставки, детские мероприятия. Мы делаем город ближе к вам —
+              планируйте свой досуг легко и удобно!
+            </p>
+            <!-- Партнёр. Start -->
+            <div class="mb-3">
+              <h6>Партнер проекта</h6>
+              <p>
+                Хотите посетить все эти места? Возьмите автомобиль в аренду у
+                нашего партнера:
+                <a
+                  href="https://i-carrent.ru/catalog/arenda/"
+                  style="color: white"
+                  rel="sponsored"
+                  >Аренда автомобилей в Иркутске</a
+                >
+              </p>
+            </div>
+            <!-- Партнёр. End -->
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">Быстрые ссылки</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a
+                  href="#home"
+                  class="text-white text-decoration-none"
+                  onclick="handleSmoothScroll('home')"
+                  >Главная</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#news"
+                  class="text-white text-decoration-none"
+                  onclick="handleSmoothScroll('news')"
+                  >События Иркутска</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#about"
+                  class="text-white text-decoration-none"
+                  onclick="handleSmoothScroll('about')"
+                  >О нас</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">
+              Хотите быть в курсе событий Иркутска?
+            </h6>
+            <p class="mb-3" style="color: #fff">
+              Подпишитесь и получайте обновления афиши: концерты, театр, кино,
+              фестивали и выставки.
+            </p>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0" style="color: #fff">
+              © 2026 Афиша Иркутска. Все права защищены.
+            </p>
+            <p class="mb-0" style="color: #aaa; font-size: 13px">
+              <b>Отказ от ответственности:</b> Вся информация, размещённая на
+              сайте, носит ознакомительный и информационный характер.
+              Администрация проекта не несет ответственности за возможные
+              изменения в расписании, отмену мероприятий, неточности или
+              действия организаторов. Для получения актуальной информации
+              рекомендуем обращаться к официальным источникам и площадкам
+              проведения событий.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a
+              href="/docs/privacy.doc"
+              class="text-white text-decoration-none me-3"
+              >Политика конфиденциальности</a
+            >
+            <a
+              href="/docs/terms.doc"
+              class="text-white text-decoration-none me-3"
+              >Условия использования</a
+            >
+            <a href="/docs/cookies.doc" class="text-white text-decoration-none"
+              >Политика файлов cookie</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      (function(){
+        // Update header subtitle depending on range
+        var subtitleEl = document.querySelector('.text-muted.mb-0');
+        var startVal = '{{ start|default('') }}';
+        var endVal = '{{ end|default('') }}';
+        if (subtitleEl && startVal && endVal) {
+          subtitleEl.textContent = 'События за период: ' + startVal + ' — ' + endVal;
+        }
+
+        var row = document.getElementById('calendarRow');
+        if (!row) return;
+        var today = new Date();
+        today.setHours(0,0,0,0);
+        var daysShort = ['ВС','ПН','ВТ','СР','ЧТ','ПТ','СБ'];
+        var monthsUp = ['ЯНВАРЬ','ФЕВРАЛЬ','МАРТ','АПРЕЛЬ','МАЙ','ИЮНЬ','ИЮЛЬ','АВГУСТ','СЕНТЯБРЬ','ОКТЯБРЬ','НОЯБРЬ','ДЕКАБРЬ'];
+        function toYMD(d){
+          var y = d.getFullYear();
+          var m = String(d.getMonth()+1).padStart(2,'0');
+          var dd = String(d.getDate()).padStart(2,'0');
+          return y + '-' + m + '-' + dd;
+        }
+        function parseYMD(s){
+          var parts = (s||'').split('-');
+          if (parts.length !== 3) return null;
+          var dt = new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10));
+          dt.setHours(0,0,0,0);
+          return isNaN(dt.getTime()) ? null : dt;
+        }
+
+        var selStart = parseYMD(startVal);
+        var selEnd = parseYMD(endVal);
+        var currentMonth = null;
+        var items = [];
+        for (var i=0;i<=20;i++){
+          var d = new Date(today);
+          d.setDate(today.getDate()+i);
+          var monthIndex = d.getMonth();
+          if (currentMonth === null || currentMonth !== monthIndex){
+            currentMonth = monthIndex;
+            var monthHeader = document.createElement('div');
+            monthHeader.className = 'month-label';
+            monthHeader.textContent = monthsUp[monthIndex];
+            row.appendChild(monthHeader);
+          }
+          var isToday = i===0;
+          var isWeekend = d.getDay() === 0 || d.getDay() === 6; // Sun(0) or Sat(6)
+          var a = document.createElement('a');
+          a.href = '#';
+          a.setAttribute('role','button');
+          a.dataset.date = toYMD(d);
+          a.className = 'calendar-item' + (isToday && !selStart ? ' active' : '');
+          a.setAttribute('aria-current', isToday ? 'date' : 'false');
+          var dow = daysShort[d.getDay()];
+          var dowHtml = '<div class="calendar-dow" style="' + (isWeekend ? 'color:#dc3545' : '') + '">' + dow + '</div>';
+          a.innerHTML = '<div class="calendar-daynum">' + d.getDate() + '</div>' + dowHtml;
+          row.appendChild(a);
+          items.push(a);
+        }
+
+        function isSameDay(a,b){ return a && b && a.getTime() === b.getTime(); }
+        function isBetween(d, a, b){ if (!a||!b) return false; return d > a && d < b; }
+
+        function updateHighlights(){
+          items.forEach(function(a){
+            var d = parseYMD(a.dataset.date);
+            a.classList.remove('selected','in-range','active');
+            if (!selStart && isSameDay(d, today)) a.classList.add('active');
+            if (selStart && !selEnd && isSameDay(d, selStart)) a.classList.add('selected');
+            if (selStart && selEnd){
+              if (isSameDay(d, selStart) || isSameDay(d, selEnd)) a.classList.add('selected');
+              if (isBetween(d, selStart, selEnd)) a.classList.add('in-range');
+            }
+          });
+        }
+        updateHighlights();
+
+        row.addEventListener('click', function(e){
+          var el = e.target.closest('.calendar-item');
+          if (!el) return;
+          e.preventDefault();
+          var d = parseYMD(el.dataset.date);
+          if (!selStart || (selStart && selEnd)){
+            selStart = d; selEnd = null; updateHighlights(); return;
+          }
+          if (selStart && !selEnd){
+            if (d < selStart){ selEnd = selStart; selStart = d; }
+            else { selEnd = d; }
+            var path = window.location.pathname;
+            var url = path + '?start=' + encodeURIComponent(toYMD(selStart)) + '&end=' + encodeURIComponent(toYMD(selEnd));
+            window.location.href = url;
+          }
+        });
+      })();
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Как добавить своё мероприятие в Афишу Иркутска?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Чтобы ваше событие появилось в календаре, отправьте описание, дату, место и афишу на info@bestjourneymap.com. Мы проверим данные и добавим мероприятие в течение суток."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как часто обновляется календарь событий?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Календарь обновляется ежедневно. Новые концерты, спектакли, выставки и фестивали появляются автоматически по мере поступления официальной информации от организаторов."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли купить билеты прямо через сайт?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Афиша Иркутска — информационный агрегатор. Мы не продаём билеты напрямую, но в карточке каждого события указаны официальные ссылки на площадки и кассы, где можно оформить покупку."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как проверить актуальность события?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Мы стараемся публиковать только подтверждённые мероприятия, однако рекомендуем перед посещением уточнять детали на сайте организатора или в соцсетях площадки — ссылки размещены в описании."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Какие события можно найти на сайте?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "На сайте представлены концерты, театральные постановки, выставки, фестивали, детские мероприятия и городские праздники в Иркутске и области."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как выбрать мероприятия на определённую дату?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Выберите нужный день в интерактивном календаре сверху страницы. Сервис автоматически покажет все события, запланированные на выбранную дату."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Можно ли использовать данные календаря на своём сайте?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Да, при указании активной ссылки на источник afisha.bestjourneymap.com. Мы открыты к партнёрствам и готовы предоставить виджет с актуальными событиями для вашего ресурса."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Как связаться с администрацией проекта?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Вы можете написать нам по адресу info@bestjourneymap.com. Мы постараемся ответить в течение рабочего дня."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <script>
+      (function () {
+        var list = document.getElementById("eventsList");
+        if (!list) return;
+        var nodes = Array.from(list.children);
+        var groups = [];
+        var current = null;
+
+        function parseDateFromH2(text) {
+          var d = new Date(text.trim());
+          if (isNaN(d.getTime())) return null;
+          var y = d.getFullYear();
+          var m = String(d.getMonth() + 1).padStart(2, "0");
+          var day = String(d.getDate()).padStart(2, "0");
+          return y + "-" + m + "-" + day;
+        }
+
+        nodes.forEach(function (n) {
+          if (n.matches && n.matches(".col-12") && n.querySelector("h2")) {
+            var h2 = n.querySelector("h2");
+            var iso = parseDateFromH2(h2 ? h2.textContent : "");
+            current = { dateISO: iso, cards: [] };
+            groups.push(current);
+            return;
+          }
+          if (!current) return;
+          if (n.querySelector && n.querySelector(".card")) {
+            current.cards.push(n);
+          }
+        });
+
+        var listItems = [];
+        var pos = 1;
+
+        groups.forEach(function (g) {
+          g.cards.forEach(function (col) {
+            var card = col.querySelector(".card");
+            if (!card) return;
+            var a = card.querySelector('a[href*="/calendar/event/"]');
+            var url = a ? a.getAttribute("href") : null;
+            if (url && !/^https?:\/\//i.test(url)) {
+              url = location.origin + url;
+            }
+
+            var img = card.querySelector("img");
+            var image = img ? img.src || img.getAttribute("src") || "" : "";
+            if (image && !/^https?:\/\//i.test(image)) {
+              image = location.origin + image;
+            }
+
+            var titleEl = card.querySelector(".card-title");
+            var name = titleEl ? titleEl.textContent.trim() : "";
+
+            var ageBadge = card.querySelector(".badge.text-bg-secondary");
+            var age = ageBadge ? ageBadge.textContent.trim() : "";
+
+            var genreBadge = card.querySelector(".badge.text-bg-light");
+            var genre = genreBadge ? genreBadge.textContent.trim() : "";
+
+            if (!name || !url) return;
+
+            var event = {
+              "@type": "Event",
+              name: name,
+              url: url,
+              image: image || undefined,
+              eventStatus: "https://schema.org/EventScheduled",
+              startDate: g.dateISO || undefined,
+              inLanguage: "ru-RU",
+              location: {
+                "@type": "Place",
+                name: "Иркутск",
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: "Иркутск",
+                  addressCountry: "RU",
+                },
+              },
+            };
+
+            var desc = card.querySelector(".card-text");
+            if (desc && desc.textContent.trim()) {
+              event.description = desc.textContent.trim();
+            }
+
+            if (genre) {
+              event.about = genre.split(",").map(function (s) {
+                return s.trim();
+              });
+              event.keywords = genre;
+            }
+
+            if (age && /^\d+\+$/.test(age)) {
+              var n = age.replace("+", "");
+              event.typicalAgeRange = n + "-";
+            }
+
+            listItems.push({
+              "@type": "ListItem",
+              position: pos++,
+              url: url,
+              item: event,
+            });
+          });
+        });
+
+        if (!listItems.length) return;
+
+        var ld = {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Календарь событий -- Иркутск -- 2026",
+          itemListOrder: "http://schema.org/ItemListOrderAscending",
+          itemListElement: listItems,
+        };
+
+        var s = document.createElement("script");
+        s.type = "application/ld+json";
+        s.textContent = JSON.stringify(ld);
+        document.body.appendChild(s);
+      })();
+    </script>
+  </body>
+</html>

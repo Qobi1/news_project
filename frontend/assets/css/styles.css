@@ -1,0 +1,1118 @@
+/* Custom styles for the news website */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+/* Remove all margins and padding for full-width design */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Override Bootstrap container margins */
+.container,
+.container-fluid {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: 100% !important;
+}
+
+/* Remove row margins */
+.row {
+  margin: 0 !important;
+}
+
+/* Add proper spacing for news cards */
+.col,
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12,
+.col-sm,
+.col-sm-1,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-md,
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-lg,
+.col-lg-1,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-xl,
+.col-xl-1,
+.col-xl-2,
+.col-xl-3,
+.col-xl-4,
+.col-xl-5,
+.col-xl-6,
+.col-xl-7,
+.col-xl-8,
+.col-xl-9,
+.col-xl-10,
+.col-xl-11,
+.col-xl-12 {
+  padding: 0.75rem !important;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  line-height: 1.6;
+}
+
+/* Hero section styling */
+.hero-section {
+  background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+  min-height: 80vh;
+  padding: 2rem 1rem;
+}
+
+/* Add padding to content areas */
+.hero-section .container {
+  padding: 0 1rem !important;
+}
+
+/* News section padding */
+#news {
+  padding: 3rem 1rem !important;
+}
+
+#news .container {
+  padding: 0 1rem !important;
+}
+
+/* Search bar spacing */
+.search-component {
+  margin-bottom: 3rem !important;
+}
+
+/* News grid spacing */
+#newsGrid {
+  margin-top: 2rem;
+}
+
+/* Individual news card spacing */
+#newsGrid .col-lg-3 {
+  margin-bottom: 2rem;
+}
+
+/* About section padding */
+#about {
+  padding: 3rem 1rem !important;
+}
+
+#about .container {
+  padding: 0 1rem !important;
+}
+
+/* Footer padding */
+footer {
+  padding: 3rem 1rem !important;
+}
+
+footer .container {
+  padding: 0 1rem !important;
+}
+
+.min-vh-75 {
+  min-height: 75vh;
+}
+
+/* News card hover effects */
+.hover-card {
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  margin-bottom: 1.5rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+  border-color: #0d6efd;
+}
+
+/* News card body styling for consistent layout */
+/* Default card body padding (no extra bottom by default) */
+.hover-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.25rem;
+  min-height: 200px;
+}
+
+/* Apply extra bottom padding only for cards inside the main news grid */
+#newsGrid .hover-card .card-body {
+  padding: 1.25rem 1.25rem 6rem 1.25rem; /* Extra bottom padding for button in news grid */
+}
+
+/* News card title styling */
+.hover-card .card-title {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  color: #333;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+  height: 2.8rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* News card text/excerpt styling */
+.hover-card .card-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #666;
+  margin-bottom: 1rem;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Enforce fixed heights for consistent layout in news grid */
+#newsGrid .news-title {
+  height: 2.8rem;
+}
+#newsGrid .news-excerpt {
+  min-height: 4.5rem;
+}
+#newsGrid .news-meta {
+  min-height: 1.25rem;
+}
+
+/* News card button container - ensure it's always at bottom */
+.hover-card .card-body .mt-auto {
+  margin-top: auto !important;
+  flex-shrink: 0;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* Force all buttons to be at bottom of card body for news grid only */
+#newsGrid .hover-card .card-body {
+  position: relative;
+}
+
+#newsGrid .hover-card .card-body .btn {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  right: 1.25rem;
+  width: auto; /* calc(100% - 2.5rem);*/
+  height: 2.5rem;
+}
+
+/* News card button styling */
+.hover-card .btn {
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+}
+
+/* News card spacing in grid */
+#newsGrid .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+#newsGrid .col-lg-3 {
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  min-height: 450px;
+}
+
+/* News image styling */
+.news-image {
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  width: 100%;
+  flex-shrink: 0;
+  border-radius: 12px 12px 0 0;
+  display: block;
+  aspect-ratio: 16 / 9;
+  object-position: center center;
+}
+
+.hover-card:hover .news-image {
+  transform: scale(1.05);
+}
+
+/* Fade-in animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.fade-in-article {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Article hero image */
+.article-hero-image {
+  height: 400px;
+  object-fit: cover;
+}
+
+/* Article content styling */
+.article-content {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.article-content p {
+  text-align: justify;
+}
+
+/* Social links hover effects */
+.social-links a {
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #0d6efd !important;
+  transform: translateY(-2px);
+}
+
+/* Button animations */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Navigation improvements */
+.navbar-brand {
+  transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+  transform: scale(1.05);
+}
+
+/* Section spacing */
+section {
+  scroll-margin-top: 80px;
+}
+
+/* Card improvements */
+.card {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+/* Gradient and professional button styles */
+.btn-gradient {
+  background: linear-gradient(90deg, #1976d2 0%, #26c6da 100%);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.25);
+  padding: 0.55rem 1.8rem;
+  transition: all 0.2s ease-in-out;
+}
+.btn-gradient:hover,
+.btn-gradient:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(25, 118, 210, 0.35);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.bg-gradient {
+  background: linear-gradient(135deg, #232526 0%, #1976d2 100%) !important;
+}
+
+.badge.bg-gradient {
+  background: linear-gradient(90deg, #1976d2 0%, #26c6da 100%) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card.shadow-lg {
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.18) !important;
+}
+
+/* Badge improvements */
+.badge {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Form improvements */
+.form-control:focus {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+  border-color: #0d6efd;
+}
+
+input.form-control.rounded-pill,
+textarea.form-control.rounded-4 {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.06);
+}
+
+input.form-control.rounded-pill:focus,
+textarea.form-control.rounded-4:focus {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px #1976d2;
+}
+
+.btn-primary.rounded-pill {
+  background: linear-gradient(90deg, #1976d2 0%, #26c6da 100%);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.25);
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary.rounded-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(25, 118, 210, 0.35);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .article-hero-image {
+    height: 250px;
+  }
+
+  .display-4 {
+    font-size: 2rem;
+  }
+
+  .display-5 {
+    font-size: 1.5rem;
+  }
+
+  .news-image {
+    height: 180px;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading animations */
+.fade-in-article:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.fade-in-article:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.fade-in-article:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.fade-in-article:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.fade-in-article:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.fade-in-article:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* Hero section improvements */
+.hero-section .btn {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hero-section .btn:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Search and filter section */
+.input-group-text {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* Print styles */
+@media print {
+  .navbar,
+  .hero-section,
+  footer,
+  .btn,
+  .social-links {
+    display: none !important;
+  }
+
+  .article-content {
+    font-size: 12pt;
+    line-height: 1.5;
+  }
+}
+
+/* Enhanced header and footer design for professional UI */
+.navbar {
+  background: linear-gradient(90deg, #232526 0%, #414345 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 24px rgba(35, 37, 38, 0.18);
+  border-bottom: 2px solid #ffeb3b;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 1rem;
+}
+
+.navbar .container-fluid {
+  padding: 0 1rem !important;
+}
+
+.navbar .navbar-brand {
+  color: #ffeb3b !important;
+  font-weight: 700;
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+  font-size: 1.1rem;
+  margin-right: 1rem;
+  background: linear-gradient(90deg, #3949ab 0%, #1976d2 100%);
+  border-radius: 8px;
+  padding: 0.6rem 1.3rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.08);
+  border: 1px solid #ffeb3b;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  display: inline-block;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  background: linear-gradient(90deg, #ffeb3b 0%, #fff176 100%);
+  color: #232526 !important;
+  box-shadow: 0 4px 16px rgba(255, 235, 59, 0.18);
+  border-color: #232526;
+}
+
+.navbar .nav-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ffeb3b;
+}
+
+footer {
+  background: linear-gradient(90deg, #232526 0%, #414345 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 -4px 24px rgba(35, 37, 38, 0.18);
+  border-top: 2px solid #ffeb3b;
+}
+
+footer h5,
+footer h6 {
+  color: #ffeb3b !important;
+  font-weight: 700;
+}
+
+footer .social-links a {
+  color: #ffeb3b !important;
+  transition: color 0.2s, transform 0.2s;
+}
+
+footer .social-links a:hover {
+  color: #fff176 !important;
+  transform: scale(1.15);
+}
+
+footer .btn-primary {
+  background: linear-gradient(90deg, #ffeb3b 0%, #fff176 100%);
+  color: #232526;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 235, 59, 0.12);
+}
+
+footer .btn-primary:hover {
+  background: linear-gradient(90deg, #fffde7 0%, #fff176 100%);
+  color: #232526;
+}
+
+footer .list-unstyled a {
+  color: #fff !important;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+footer .list-unstyled a:hover {
+  color: #ffeb3b !important;
+}
+
+/* Search component styling */
+.search-main {
+  position: relative;
+}
+
+.search-main .form-control {
+  border-radius: 25px;
+  padding: 12px 20px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.search-main .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.search-component {
+  position: relative;
+}
+
+.search-component .search-highlight {
+  background-color: #fff3cd;
+  padding: 0.1em 0.2em;
+  border-radius: 0.2em;
+  font-weight: 500;
+}
+
+.search-component .input-group:focus-within {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-radius: 50px;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+.search-component .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.search-component .spinner-border-sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* Improved input focus states */
+.search-component .form-control:focus {
+  box-shadow: none;
+  border-color: transparent;
+  background-color: #fff;
+}
+
+.search-component .input-group-text {
+  transition: all 0.2s ease;
+}
+
+.search-component .input-group:focus-within .input-group-text {
+  background-color: #f8f9fa;
+  border-color: #007bff;
+}
+
+/* Search suggestions and history dropdown */
+.search-component .position-absolute {
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.search-component .position-absolute .btn-link {
+  color: #495057;
+  text-decoration: none;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.search-component .position-absolute .btn-link:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.search-component .position-absolute .btn-link:focus {
+  box-shadow: none;
+  background-color: #e9ecef;
+}
+
+/* Search results info */
+.search-component .text-muted {
+  font-size: 0.9rem;
+}
+
+/* Responsive adjustments for search */
+@media (max-width: 768px) {
+  .search-component .input-group {
+    flex-direction: column;
+  }
+
+  .search-component .input-group .btn {
+    border-radius: 0 0 50px 50px;
+    margin-top: -1px;
+  }
+
+  .search-component .position-absolute {
+    position: relative !important;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Animation for search results */
+.search-result-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.search-result-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.search-result-exit {
+  opacity: 1;
+}
+
+.search-result-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #0d6efd;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Article content styling */
+.article-content {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.article-content p {
+  margin-bottom: 1.5rem;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: 60vh;
+    padding: 1rem 0.5rem;
+  }
+
+  .hero-section .container-fluid {
+    padding: 0 0.5rem !important;
+  }
+
+  #news,
+  #about,
+  footer {
+    padding: 2rem 0.5rem !important;
+  }
+
+  #news .container-fluid,
+  #about .container-fluid,
+  footer .container-fluid {
+    padding: 0 0.5rem !important;
+  }
+
+  .navbar {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .navbar .container-fluid {
+    padding: 0 0.5rem !important;
+  }
+
+  /* Mobile news card spacing */
+  #newsGrid .col-lg-3 {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    min-height: 400px;
+  }
+
+  /* Mobile news card adjustments */
+  .hover-card .card-body {
+    min-height: 180px;
+    padding: 1rem; /* default */
+  }
+
+  /* Only add extra bottom padding within news grid on mobile */
+  #newsGrid .hover-card .card-body {
+    padding: 1rem 1rem 5.5rem 1rem; /* Extra bottom padding for button */
+  }
+
+  #newsGrid .hover-card .card-body .btn {
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    width: auto; /*calc(100% - 2rem);*/
+    height: 2.25rem;
+  }
+
+  .hover-card .card-title {
+    height: 2.4rem;
+    font-size: 1rem;
+  }
+
+  .hover-card .card-text {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .news-image {
+    height: 180px;
+  }
+
+  .search-component {
+    margin-bottom: 2rem !important;
+  }
+
+  /* Mobile recommended news styling */
+  #recommendedNews {
+    padding: 2rem 0.5rem !important;
+  }
+
+  #recommendedNews .container-fluid {
+    padding: 0 0.5rem !important;
+  }
+
+  .recommended-card {
+    margin-bottom: 1rem;
+    height: 420px !important; /* Slightly smaller height for mobile */
+  }
+
+  .recommended-image {
+    height: 160px !important; /* Smaller image height for mobile */
+  }
+
+  .recommended-card .card-body {
+    height: 260px; /* Adjusted for mobile */
+    padding: 1rem;
+  }
+
+  .recommended-title {
+    font-size: 0.9rem;
+    height: 2.4rem; /* Fixed height for mobile */
+    -webkit-line-clamp: 2;
+  }
+
+  .recommended-excerpt {
+    font-size: 0.8rem;
+    height: 3.6rem; /* Fixed height for mobile */
+    -webkit-line-clamp: 2;
+  }
+
+  #recommendedNewsGrid .col-lg-3 {
+    margin-bottom: 1rem;
+    min-height: 420px; /* Match card height */
+  }
+
+  .recommended-card .mt-auto {
+    height: 70px; /* Fixed button container height for mobile */
+  }
+
+  .recommended-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .display-3 {
+    font-size: 2.5rem;
+  }
+
+  .display-4 {
+    font-size: 2rem;
+  }
+
+  .display-5 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Recommended News Section Styling */
+#recommendedNews {
+  background-color: #f8f9fa;
+  padding: 3rem 1rem !important;
+}
+
+#recommendedNews .container-fluid {
+  padding: 0 1rem !important;
+}
+
+#recommendedNewsGrid .row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+#recommendedNewsGrid .col-lg-3 {
+  display: flex;
+  margin-bottom: 1.5rem;
+  min-height: 500px; /* Fixed minimum height for all cards */
+}
+
+.recommended-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease;
+  border: 1px solid #e9ecef;
+  height: 500px !important; /* Fixed height for uniform cards */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.recommended-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.recommended-image {
+  height: 200px !important; /* Fixed image height */
+  object-fit: cover;
+  border-radius: 12px 12px 0 0 !important;
+  flex-shrink: 0;
+  width: 100%;
+  display: block;
+  object-position: center center;
+}
+
+.recommended-card .card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1.25rem;
+  height: 300px; /* Fixed card body height */
+  justify-content: space-between;
+}
+
+.recommended-badge {
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%) !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  margin-bottom: 0.75rem;
+  align-self: flex-start;
+}
+
+.recommended-title {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #333;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+  height: 2.8rem; /* Fixed title height */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-weight: 600;
+}
+
+.recommended-excerpt {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #666;
+  margin-bottom: 1rem;
+  flex: 1;
+  height: 4.5rem; /* Fixed excerpt height */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recommended-date {
+  font-size: 0.8rem;
+  color: #888;
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.recommended-card .mt-auto {
+  margin-top: auto;
+  flex-shrink: 0;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+  height: 80px; /* Fixed button container height */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.recommended-btn {
+  background: transparent !important;
+  border: 2px solid #007bff !important;
+  color: #007bff !important;
+  border-radius: 8px !important;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recommended-btn:hover {
+  background: #007bff !important;
+  color: white !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

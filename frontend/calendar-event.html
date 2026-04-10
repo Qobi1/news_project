@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ event.title or 'Событие' }} — Афиша Иркутска</title>
+    <meta name="description" content="{{ (event.description or '')[:160] }}" />
+
+    <meta
+      property="og:title"
+      content="{{ event.title or 'Событие' }} — Афиша Иркутска"
+    />
+    <meta
+      property="og:description"
+      content="{{ (event.description or '')[:160] }}"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="{{ event.image or '/assets/images/og-image.png' }}"
+    />
+
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/assets/images/favicon-16x16.png"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+
+    <!--JSON-LD.Start-->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Event",
+        "name": "{{ event.title | default('Событие') | replace('\"', '\\\"') }}",
+        "description": "{{ event.description | default('') | striptags | truncate(160) | replace('\"', '\\\"') }}",
+        {% if event.image %}
+        "image": "{{ event.image }}",
+        {% endif %}
+        "startDate": "{{ event.date }}", {# Убедись, что тут формат ISO 8601, например 2026-03-15T19:00 #}
+        "eventStatus": "https://schema.org/EventScheduled",
+        "location": {
+          "@type": "Place",
+          "name": "{{ event.place | default('Иркутск') | replace('\"', '\\\"') }}",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Иркутск",
+            "addressCountry": "RU"
+          }
+        }
+      }
+    </script>
+    <!--JSON-LD.End-->
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <nav class="navbar navbar-expand-lg sticky-top shadow">
+        <div class="container-fluid">
+          <a href="/" class="navbar-brand fw-bold fs-3">
+            <i class="bi bi-newspaper fs-3 me-2"></i>Афиша Иркутска
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="py-5 flex-grow-1">
+      <div class="container-fluid">
+        <a
+          href="/calendar/irkutsk-{{ (event.date.year if event.date else '') }}"
+          class="btn btn-outline-primary mb-4"
+        >
+          <i class="bi bi-arrow-left me-2"></i>Назад к календарю
+        </a>
+
+        <div class="row mb-4">
+          <div class="col-12 text-center">
+            <h1 class="display-6 fw-bold">{{ event.title }}</h1>
+            <p class="text-muted mb-0">
+              {% if event.rating %}<span class="me-3"
+                ><i class="bi bi-star-fill text-warning me-1"></i>{{
+                event.rating }}</span
+              >{% endif %} {% if event.age %}<span
+                class="badge text-bg-secondary"
+                >{{ event.age }}</span
+              >{% endif %}
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-12">
+            {% if event.image %}
+            <div
+              class="overflow-hidden rounded shadow-sm"
+              style="max-width: 900px; margin: 0 auto 16px"
+            >
+              <div class="ratio ratio-21x9">
+                <img
+                  src="{{ event.image }}"
+                  class="w-100 h-100 object-fit-cover"
+                  alt="{{ event.title or '' }}"
+                  style="border-radius: 6px"
+                />
+              </div>
+            </div>
+            {% endif %}
+
+            <div class="mt-3">
+              <div class="card shadow-sm">
+                <div class="card-body">
+                  <h2 class="h6 fw-bold mb-3">Информация</h2>
+                  <ul class="list-unstyled mb-0">
+                    {% if event.date %}
+                    <li class="mb-2">
+                      <i class="bi bi-calendar3 me-2"></i>{{ event.date }}
+                    </li>
+                    {% endif %} {% if event.genres %}
+                    <li class="mb-2">
+                      <i class="bi bi-tags me-2"></i>{{ event.genres }}
+                    </li>
+                    {% endif %} {% if event.age %}
+                    <li class="mb-2">
+                      <i class="bi bi-person me-2"></i>{{ event.age }}
+                    </li>
+                    {% endif %} {% if event.link %}
+                    <li class="mb-2">
+                      <i class="bi bi-link-45deg me-2"></i
+                      ><a href="{{ event.link }}" target="_blank" rel="noopener"
+                        >Официальная страница</a
+                      >
+                    </li>
+                    {% endif %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {% if event.description %}
+            <div class="mt-3">
+              <h2 class="h6 fw-bold mb-2">Описание</h2>
+              <p class="text-muted mb-0">{{ event.description }}</p>
+            </div>
+            {% endif %} {% if event.gallery_images and
+            event.gallery_images|length > 0 %}
+            <div class="mt-4">
+              <h2 class="h5 fw-bold">Галерея</h2>
+              <div class="d-flex gap-3 overflow-auto py-2">
+                {% set ns = namespace(seen=[]) %} {% for g in
+                event.gallery_images %} {% if g and g != event.image and (g not
+                in ns.seen) %}
+                <img
+                  src="{{ g }}"
+                  alt="gallery"
+                  style="height: 140px; border-radius: 8px"
+                />
+                {% set ns.seen = ns.seen + [g] %} {% endif %} {% endfor %}
+              </div>
+            </div>
+            {% endif %} {% if event.schedule_list and event.schedule_list|length
+            > 0 %}
+            <div class="mt-4">
+              <h2 class="h5 fw-bold">Расписание</h2>
+              <div class="list-group">
+                {% for s in event.schedule_list %}
+                <div class="list-group-item">
+                  {% if s.cinema %}
+                  <div class="fw-semibold">{{ s.cinema }}</div>
+                  {% endif %} {% if s.address %}
+                  <div class="text-muted" style="font-size: 0.9rem">
+                    {{ s.address }}
+                  </div>
+                  {% endif %} {% if s.times and s.times|length > 0 %}
+                  <div class="mt-2 d-flex flex-wrap gap-2">
+                    {% for t in s.times %}
+                    <span class="badge text-bg-light border"
+                      ><i class="bi bi-clock me-1"></i>{{ t }}</span
+                    >
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="py-5 bg-gradient text-white mt-auto">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3" style="color: #ffeb3b">
+              <i class="bi bi-newspaper fs-4 me-2"></i>Афиша Иркутска
+            </h5>
+            <p class="mb-3">
+              <b>Афиша Иркутска</b> — концерты, кино, спектакли, фестивали,
+              выставки, детские мероприятия. Мы делаем город ближе к вам —
+              планируйте свой досуг легко и удобно!
+            </p>
+            <!-- Партнёр. Start -->
+            <div class="mb-3">
+              <h6>Партнер проекта</h6>
+              <p>
+                Хотите посетить все эти места? Возьмите автомобиль в аренду у
+                нашего партнера:
+                <a
+                  href="https://i-carrent.ru/catalog/arenda/"
+                  style="color: white"
+                  rel="sponsored"
+                  >Аренда автомобилей в Иркутске</a
+                >
+              </p>
+            </div>
+            <!-- Партнёр. End -->
+          </div>
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">Быстрые ссылки</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a href="#home" class="text-white text-decoration-none"
+                  >Главная</a
+                >
+              </li>
+              <li>
+                <a href="#news" class="text-white text-decoration-none"
+                  >События Иркутска</a
+                >
+              </li>
+              <li>
+                <a href="#about" class="text-white text-decoration-none"
+                  >О нас</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">
+              Хотите быть в курсе событий Иркутска?
+            </h6>
+            <p class="mb-3" style="color: #fff">
+              Подпишитесь и получайте обновления афиши: концерты, театр, кино,
+              фестивали и выставки.
+            </p>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0" style="color: #fff">
+              © 2026 Афиша Иркутска. Все права защищены.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a
+              href="/docs/privacy.doc"
+              class="text-white text-decoration-none me-3"
+              >Политика конфиденциальности</a
+            >
+            <a
+              href="/docs/terms.doc"
+              class="text-white text-decoration-none me-3"
+              >Условия использования</a
+            >
+            <a href="/docs/cookies.doc" class="text-white text-decoration-none"
+              >Политика файлов cookie</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

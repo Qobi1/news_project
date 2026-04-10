@@ -1,0 +1,14 @@
+User-agent: *
+# Разрешаем сканировать весь основной сайт
+Allow: /
+
+# Закрываем системные вещи и дубли, чтобы не тратить краулинговый бюджет
+Disallow: /search*
+Disallow: /*?q=*
+Disallow: /*&sort=*
+
+# Закрываем от индексации скачиваемые файлы, пока ты не переделал их в HTML
+Disallow: /docs/*.doc$
+
+# Указываем путь к правильной карте сайта
+Sitemap: https://afisha.bestjourneymap.com/sitemap.xml

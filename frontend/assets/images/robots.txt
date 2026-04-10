@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://afisha.bestjourneymap.com/sitemap.xml
+
+# Disallow search pages without queries
+Disallow: /search?q=

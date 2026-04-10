@@ -1,29 +1,636 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NewsHub - Latest News & Updates</title>
-    <meta name="description" content="Stay updated with the latest news, technology, sports, and business updates from NewsHub - your trusted news source.">
-    <meta name="keywords" content="news, latest news, technology, sports, business, updates">
-    <meta name="author" content="NewsHub">
-    
+    <title>Афиша Иркутска — события, концерты, спектакли, выставки</title>
+    <meta
+      name="description"
+      content="Узнайте, куда сходить в Иркутске сегодня, завтра и на выходных. Актуальное расписание концертов, выставок и спектаклей 2026 года на Афише Иркутска. Удобный поиск по категориям!"
+    />
+
+    <meta name="author" content="Афиша Иркутска" />
+    <meta name="robots" content="index,follow" />
+    <meta name="googlebot" content="index,follow" />
+    <meta name="yandex" content="index,follow" />
+
+    <!-- Language and locale -->
+    <meta http-equiv="content-language" content="ru" />
+    <meta name="language" content="Russian" />
+
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="NewsHub - Latest News & Updates">
-    <meta property="og:description" content="Stay updated with the latest news, technology, sports, and business updates.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="/api/placeholder/1200/630">
-    
+    <meta
+      property="og:title"
+      content="Афиша Иркутска — события, концерты, спектакли, выставки"
+    />
+    <meta
+      property="og:description"
+      content="Свежая афиша Иркутска: что сегодня, завтра и на выходных. Концерты, театр, кино, выставки, фестивали. Подборки по датам и категориям."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://afisha.bestjourneymap.com/" />
+    <meta property="og:site_name" content="Афиша Иркутска" />
+    <meta property="og:locale" content="ru_RU" />
+
+    <!-- Social image (1200×630, ≤5MB, статичный URL) -->
+    <meta
+      property="og:image"
+      content="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Афиша Иркутска — лучшие события города"
+    />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Афиша Иркутска — события, концерты, спектакли, выставки"
+    />
+    <meta
+      name="twitter:description"
+      content="Что сегодня и на выходных в Иркутске — удобная афиша событий и подборки."
+    />
+    <meta
+      name="twitter:image"
+      content="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+    />
+
+    <!-- Yandex specific meta tags -->
+    <meta name="yandex-verification" content="" />
+    <meta name="yandex" content="all" />
+
+    <!-- Google specific meta tags -->
+    <meta name="google-site-verification" content="" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://afisha.bestjourneymap.com/" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon-16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/images/favicon-96x96.png"
+    />
+
+    <!-- Apple Touch Icons -->
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="assets/images/apple-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="assets/images/apple-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="assets/images/apple-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="assets/images/apple-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="assets/images/apple-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="assets/images/apple-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="assets/images/apple-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="assets/images/apple-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/apple-icon-180x180.png"
+    />
+
+    <!-- Android Icons -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="36x36"
+      href="assets/images/android-icon-36x36.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="assets/images/android-icon-48x48.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="72x72"
+      href="assets/images/android-icon-72x72.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/images/android-icon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="144x144"
+      href="assets/images/android-icon-144x144.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/images/android-icon-192x192.png"
+    />
+
+    <!-- Microsoft Icons -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="70x70"
+      href="assets/images/ms-icon-70x70.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="144x144"
+      href="assets/images/ms-icon-144x144.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="150x150"
+      href="assets/images/ms-icon-150x150.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="310x310"
+      href="assets/images/ms-icon-310x310.png"
+    />
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="assets/images/manifest.json" />
+
+    <!-- Browser Config -->
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta
+      name="msapplication-TileImage"
+      content="assets/images/ms-icon-144x144.png"
+    />
+    <meta name="theme-color" content="#ffffff" />
+
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+
+    <!-- Preconnect/Hint -->
+    <link
+      rel="preconnect"
+      href="https://cdn.jsdelivr.net"
+      crossorigin="anonymous"
+    />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+
+    <!--Глобальная связка Organization + WebSite + SearchAction. Start-->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://afisha.bestjourneymap.com/#about",
+            "name": "Афиша Иркутска",
+            "url": "https://afisha.bestjourneymap.com/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://afisha.bestjourneymap.com/assets/images/og-image.png"
+            },
+            "sameAs": ["https://t.me/ai_everyday_io"],
+            "contactPoint": [
+              {
+                "@type": "ContactPoint",
+                "contactType": "customer support",
+                "email": "hello@bestjourneymap.com",
+                "areaServed": "RU",
+                "availableLanguage": ["ru-RU"]
+              }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://afisha.bestjourneymap.com/#website",
+            "url": "https://afisha.bestjourneymap.com/",
+            "name": "Афиша Иркутска",
+            "publisher": { "@id": "https://afisha.bestjourneymap.com/#about" },
+            "inLanguage": "ru-RU",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://afisha.bestjourneymap.com/search?q={query}",
+              "query-input": "required name=query"
+            }
+          }
+        ]
+      }
+    </script>
+    <!--Глобальная связка Organization + WebSite + SearchAction. End-->
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    <!-- Bootstrap 5 JS -->
+    <!-- Header -->
+    <header>
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg sticky-top shadow">
+        <div
+          class="container-fluid d-flex align-items-center justify-content-between"
+        >
+          <a href="/" class="navbar-brand fw-bold">
+            <i class="bi bi-newspaper fs-4 me-2"></i>Афиша Иркутска 2026
+          </a>
+          <div class="d-flex gap-2">
+            <a href="/" class="nav-link btn btn-gradient">Главная</a>
+            <a
+              href="https://afisha.bestjourneymap.com/calendar/irkutsk-2026"
+              class="nav-link btn btn-gradient"
+            >
+              Календарь 2026
+            </a>
+
+            <a
+              href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-03/"
+              class="nav-link btn btn-gradient"
+            >
+              Выходные Март
+            </a>
+
+            <a
+              href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-02/"
+              class="nav-link btn btn-gradient"
+            >
+              Выходные Февраль
+            </a>
+            <a
+              href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-01/"
+              class="nav-link btn btn-gradient"
+            >
+              Выходные Январь
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Hero Section -->
+      <section id="home" class="hero-section bg-gradient text-white py-5">
+        <div class="container-fluid">
+          <div class="row align-items-center min-vh-75">
+            <div class="col-lg-8">
+              <h1 class="display-3 fw-bold mb-4 fade-in">
+                Афиша Иркутска 2026: все события и мероприятия
+              </h1>
+              <p class="lead mb-4 fade-in">
+                Узнайте, куда сходить в Иркутске сегодня и на выходных. Афиша
+                города: концерты, спектакли, кино, фестивали, выставки, детские
+                мероприятия. Всё в одном месте!
+              </p>
+              <button
+                class="btn btn-light btn-lg fade-in shadow-lg px-4 py-2 rounded-pill"
+                onclick="handleSmoothScroll('news')"
+              >
+                Посмотреть афишу Иркутска
+                <i class="bi bi-arrow-down fs-6 ms-2"></i>
+              </button>
+            </div>
+            <div class="col-lg-4 text-center">
+              <img
+                src="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+                alt="Афиша Иркутска"
+                class="img-fluid rounded shadow-lg fade-in"
+                style="max-height: 340px; object-fit: cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <!-- News Section -->
+    <section id="news" class="py-5 bg-light">
+      <div class="container-fluid">
+        <div class="row mb-5">
+          <div class="col-12 text-center">
+            <h2 class="display-4 fw-bold mb-3">
+              Афиша Иркутска — свежие события и мероприятия
+            </h2>
+            <p class="lead text-muted">
+              Мы собрали для вас все самые интересные события: концерты, кино,
+              театры, выставки, фестивали и занятия для детей. Выбирайте, куда
+              сходить сегодня или на выходных!
+            </p>
+          </div>
+        </div>
+
+        <!-- Search Component -->
+        <div class="row mb-4">
+          <div class="col-lg-8 mx-auto">
+            <div class="search-component search-main">
+              <form onsubmit="handleSearch(event)" class="position-relative">
+                <div class="input-group">
+                  <input
+                    type="text"
+                    id="searchInput"
+                    class="form-control form-control-lg"
+                    placeholder="Найдите событие по названию или дате..."
+                    value=""
+                  />
+                  <button
+                    type="submit"
+                    id="searchBtn"
+                    class="btn btn-primary"
+                    disabled
+                  >
+                    <i class="bi bi-search me-2"></i>Найти
+                  </button>
+                </div>
+              </form>
+
+              <div
+                id="searchResults"
+                class="mt-3 text-center"
+                style="display: none"
+              >
+                <div
+                  class="d-flex align-items-center justify-content-center gap-3"
+                >
+                  <span class="text-muted" id="searchStatus"
+                    >Найдено результатов: 0</span
+                  >
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary btn-sm"
+                    onclick="clearSearch()"
+                  >
+                    <i class="bi bi-x-circle me-1"></i>Очистить
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="row" style="display: none">
+          <div class="col-12 text-center">
+            <div class="loading-spinner"></div>
+            <p class="mt-2 text-muted">Загрузка новостей...</p>
+          </div>
+        </div>
+
+        <!-- News Grid -->
+        <div id="newsGrid" class="row">
+          <!-- News articles will be loaded here -->
+        </div>
+
+        <!-- Load More Button -->
+        <div id="loadMoreContainer" class="row" style="display: none">
+          <div class="col-12 text-center">
+            <button
+              class="btn btn-outline-primary btn-lg rounded-pill px-5"
+              onclick="loadMoreArticles()"
+            >
+              Загрузить еще статьи <i class="bi bi-plus-circle ms-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Buttons -->
+        <div class="row mt-4">
+          <div
+            class="col-12 d-flex flex-wrap gap-2 justify-content-center"
+            id="categoryButtons"
+          >
+            <!-- Categories will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5 bg-gradient text-white">
+      <div class="container-fluid">
+        <div class="row mb-5">
+          <div class="col-12 text-center">
+            <h2 class="display-4 fw-bold mb-3">О нас</h2>
+            <p class="lead">
+              Наш проект — это современная афиша Иркутска. Мы ежедневно собираем
+              самые интересные события города: от громких концертов и премьер в
+              театрах до камерных выставок и детских мастер-классов. Наша цель —
+              сделать так, чтобы вы всегда знали, куда сходить в Иркутске
+              сегодня, завтра и на выходных.
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <div class="card shadow-lg border-0 bg-white text-dark">
+              <div class="card-body p-5">
+                <h4 class="fw-bold mb-3">Наши ценности:</h4>
+                <p>
+                  <b>Актуальность</b> — афиша обновляется ежедневно.
+                  <b>Достоверность</b> — проверяем информацию у организаторов.
+                  <b>Удобство</b> — все события собраны в одном месте.
+                  <b>Поддержка города</b> — мы продвигаем культуру и бизнес
+                  Иркутска.
+                </p>
+                <p class="mb-0">Спасибо, что выбираете нас!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-gradient text-white">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3" style="color: #ffeb3b">
+              <i class="bi bi-newspaper fs-4 me-2"></i>Афиша Иркутска
+            </h5>
+            <p class="mb-3">
+              <b>Афиша Иркутска</b> — концерты, кино, спектакли, фестивали,
+              выставки, детские мероприятия. Мы делаем город ближе к вам —
+              планируйте свой досуг легко и удобно!
+            </p>
+            <!-- Партнёр. Start -->
+            <div class="mb-3">
+              <h6>Партнер проекта</h6>
+              <p>
+                Хотите посетить все эти места? Возьмите автомобиль в аренду у
+                нашего партнера:
+                <a
+                  href="https://i-carrent.ru/catalog/arenda/"
+                  style="color: white"
+                  rel="sponsored"
+                  >Аренда автомобилей в Иркутске</a
+                >
+              </p>
+            </div>
+            <!-- Партнёр. End -->
+          </div>
+
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">Быстрые ссылки</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a href="/" class="text-white text-decoration-none">
+                  Главная
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://afisha.bestjourneymap.com/calendar/irkutsk-2026"
+                >
+                  Календарь 2026 </a
+                ><br />
+
+                <a
+                  href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-03/"
+                >
+                  Выходные Март </a
+                ><br />
+
+                <a
+                  href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-02/"
+                >
+                  Выходные Февраль </a
+                ><br />
+
+                <a
+                  href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-01/"
+                >
+                  Выходные Январь </a
+                ><br />
+              </li>
+              <li>
+                <a href="/#about" class="text-white text-decoration-none">
+                  О нас
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">
+              Хотите быть в курсе событий Иркутска?
+            </h6>
+            <p class="mb-3" style="color: #fff">
+              Подпишитесь и получайте обновления афиши: концерты, театр, кино,
+              фестивали и выставки.
+            </p>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0" style="color: #fff">
+              © 2026 Афиша Иркутска. Все права защищены.
+            </p>
+            <p class="mb-0" style="color: #aaa; font-size: 13px">
+              <b>Отказ от ответственности:</b> Вся информация, размещённая на
+              сайте, носит ознакомительный и информационный характер.
+              Администрация проекта не несет ответственности за возможные
+              изменения в расписании, отмену мероприятий, неточности или
+              действия организаторов. Для получения актуальной информации
+              рекомендуем обращаться к официальным источникам и площадкам
+              проведения событий.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a
+              href="/docs/privacy.doc"
+              class="text-white text-decoration-none me-3"
+            >
+              Политика конфиденциальности
+            </a>
+            <a
+              href="/docs/terms.doc"
+              class="text-white text-decoration-none me-3"
+            >
+              Условия использования
+            </a>
+            <a href="/docs/cookies.doc" class="text-white text-decoration-none">
+              Политика файлов cookie
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="assets/js/script.js"></script>
+
+    <!--Markup SearchResultsPage. Start-->
+    <script type="application/ld+json" id="search-ld">
+      (function(){
+        const url = new URL(location.href);
+        const q = url.searchParams.get('q');
+        if(!q) return;
+        const data = {
+          "@context": "https://schema.org",
+          "@type": "SearchResultsPage",
+          "name": "Результаты поиска по афише",
+          "description": "События по запросу: " + q,
+          "url": location.href,
+          "inLanguage": "ru-RU",
+          "isPartOf": { "@id": "https://afisha.bestjourneymap.com/#website" }
+        };
+        document.currentScript.outerHTML = '<script type="application/ld+json">'+JSON.stringify(data)+'</'+'script>';
+      })();
+    </script>
+    <!--Markup SearchResultsPage. End-->
   </body>
 </html>
