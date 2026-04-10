@@ -9,7 +9,7 @@ jobs:
   test_and_deploy:
     runs-on: ubuntu-latest
 
-    step:
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
