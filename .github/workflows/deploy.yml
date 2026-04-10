@@ -24,15 +24,15 @@ jobs:
           # FIXED: Point to the backend folder
           pip install -r backend/requirements.txt
 
-      - name: Run parser script
+- name: Run parser script
+        working-directory: ./backend  # ADD THIS
         run: |
-          # FIXED: Point to the backend folder
-          python backend/parsing.py
+          python parsing.py
 
       - name: Start FastAPI
+        working-directory: ./backend  # ADD THIS
         run: |
-          # FIXED: Use working-directory or path-to-app
-          cd backend && uvicorn api:app --host 127.0.0.1 --port 8000 &
+          uvicorn api:app --host 127.0.0.1 --port 8000 &
           sleep 5
 
       - name: Check API
