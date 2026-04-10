@@ -1,0 +1,54 @@
+name: Parse and publish news
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test_and_deploy:
+    runs-on: ubuntu-latest
+
+    step:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run parser script
+        run: |
+          python parsing.py
+
+      - name: Start FastAPI
+        run: |
+          uvicorn api:app --host 127.0.0.1 --port 8000 &
+          sleep 5
+
+      - name: Check API
+        run: |
+          curl http://127.0.0.1:8000/docs || exit 1
+
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: "unnecessary-if-using-stricthostkeychecking-no"
+
+      - name: Deploy and Restart Gunicorn
+        if: github.event_name == 'push' # Only deploy on push, not on Pull Requests
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} "
+            cd /home/${{ vars.SSH_USER }}/news_website &&
+            git pull origin main &&
+            source venv/bin/activate &&
+            pip install -r requirements.txt &&
+            sudo systemctl restart news_website.service
+          "
