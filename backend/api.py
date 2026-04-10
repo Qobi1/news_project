@@ -642,25 +642,3 @@ def calendar_event_detail(id: int, request: Request, db: Session = Depends(get_d
             "event": event_obj,
         },
     )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
