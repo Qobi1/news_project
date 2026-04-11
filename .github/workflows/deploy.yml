@@ -24,11 +24,6 @@ jobs:
           # FIXED: Point to the backend folder
           pip install -r backend/requirements.txt
 
-      - name: Run parser script
-        working-directory: ./backend  # ADD THIS
-        run: |
-          python parsing.py
-
       - name: Start FastAPI
         working-directory: ./backend  # ADD THIS
         run: |
