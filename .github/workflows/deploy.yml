@@ -41,7 +41,9 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd /var/www/news_website/backend &&
+            git stash --include-untracked &&
             git pull origin main &&
+            git stash pop || true &&
             source venv/bin/activate &&
             pip install -r requirements.txt &&
             sudo systemctl restart news_website.service
