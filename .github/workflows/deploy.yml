@@ -39,7 +39,7 @@ jobs:
       - name: Deploy and Restart Gunicorn
         if: github.event_name == 'push'
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ vars.SSH_USER }}@${{ vars.SSH_HOST }} "
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
             cd /var/www/news_website/backend &&
             git pull origin main &&
             source venv/bin/activate &&

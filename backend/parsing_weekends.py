@@ -11,6 +11,7 @@ from slugify import slugify
 from db.sql import insert_weekend_data
 
 
+
 def parse_weekends_data():
     BASE_URL = "https://gorodzovet.ru"
     url = f"{BASE_URL}/irkutsk/weekend/"
