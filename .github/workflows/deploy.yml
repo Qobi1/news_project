@@ -46,5 +46,6 @@ jobs:
             git stash pop || true &&
             source venv/bin/activate &&
             pip install -r requirements.txt &&
-            sudo systemctl restart news_website.service
+            sudo systemctl restart news_project.service
+            sudo systemctl restart parser.service
           "
