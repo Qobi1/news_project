@@ -2,8 +2,36 @@
 let currentArticle = null;
 let recommendedArticles = [];
 
-// API Configuration
-const BACKEND_URL = "https://afisha.bestjourneymap.com/api";
+/**
+ * Back from article: prefer history.back() when the tab has a real stack.
+ * If referrer is set but history.length === 1 (e.g. new tab), history.back() does nothing — use referrer URL instead.
+ */
+function goBackFromArticle() {
+  const here = window.location.href.split("#")[0];
+  let refUrl = null;
+  if (document.referrer) {
+    try {
+      const u = new URL(document.referrer);
+      if (u.origin === window.location.origin && u.href.split("#")[0] !== here) {
+        refUrl = u.href;
+      }
+    } catch {
+      /* ignore */
+    }
+  }
+
+  if (window.history.length > 1) {
+    window.history.back();
+    return;
+  }
+  if (refUrl) {
+    window.location.assign(refUrl);
+    return;
+  }
+  window.location.href = "/";
+}
+
+window.goBackFromArticle = goBackFromArticle;
 
 // Icon configuration
 const ICONS = {
@@ -76,7 +104,8 @@ function wrapImagesScrollable(html) {
 // API functions
 async function fetchNewsById(id) {
   try {
-    const response = await fetch(`${BACKEND_URL}/news/${id}`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/news/${id}`);
     if (!response.ok) {
       throw new Error("Article not found");
     }
@@ -93,7 +122,8 @@ async function fetchNewsById(id) {
 
 async function fetchNews() {
   try {
-    const response = await fetch(`${BACKEND_URL}/news/`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/news/`);
     if (!response.ok) {
       throw new Error("Failed to fetch news");
     }
@@ -116,7 +146,8 @@ async function fetchNews() {
 
 async function fetchRandomNews() {
   try {
-    const response = await fetch(`${BACKEND_URL}/random-news/`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/random-news/`);
     if (!response.ok) {
       throw new Error("Failed to fetch random news");
     }
@@ -266,13 +297,16 @@ function generateJSONLD(article) {
   };
 }
 
-function generateBreadcrumbJSONLD(article) {
+function generateBreadcrumbJSONLD(article, categoryPageAbsUrl) {
   const baseUrl = window.location.origin;
+  const catUrl =
+    categoryPageAbsUrl ||
+    `${baseUrl}/?category=${encodeURIComponent(article.category)}`;
   const breadcrumbs = [
     { name: "Главная", url: baseUrl },
     {
       name: article.category,
-      url: `${baseUrl}/?category=${encodeURIComponent(article.category)}`,
+      url: catUrl,
     },
     { name: article.title, url: `${baseUrl}/article.html?id=${article.id}` },
   ];
@@ -289,6 +323,26 @@ function generateBreadcrumbJSONLD(article) {
   };
 
   return jsonLd;
+}
+
+async function resolveCategoryHubUrl(category) {
+  try {
+    const base = await resolveApiBaseUrl();
+    const r = await fetch(`${base}/hub-manifest/`, { credentials: "omit" });
+    if (!r.ok) {
+      return `/?category=${encodeURIComponent(category)}`;
+    }
+    const j = await r.json();
+    const map = j.byCategory || {};
+    const href =
+      map[category.trim().toLowerCase()] || map[category];
+    if (href) {
+      return href;
+    }
+  } catch (_) {
+    /* fall through */
+  }
+  return `/?category=${encodeURIComponent(category)}`;
 }
 
 // UI functions
@@ -335,7 +389,6 @@ function showArticle(article) {
 
   // Add JSON-LD structured data
   const jsonLd = generateJSONLD(article);
-  const breadcrumbJsonLd = generateBreadcrumbJSONLD(article);
 
   // Remove existing JSON-LD scripts - переделываем в Не удаляй чужие JSON-LD (Organization/WebSite)
   // const existingScripts = document.querySelectorAll(
@@ -353,18 +406,29 @@ function showArticle(article) {
   jsonLdScript.textContent = JSON.stringify(jsonLd);
   document.head.appendChild(jsonLdScript);
 
-  const breadcrumbScript = document.createElement("script");
-  breadcrumbScript.type = "application/ld+json";
-  breadcrumbScript.setAttribute("data-dynamic-ld", "breadcrumbs");
-  breadcrumbScript.textContent = JSON.stringify(breadcrumbJsonLd);
-  document.head.appendChild(breadcrumbScript);
-
-  // Update breadcrumbs
   document.getElementById("categoryLink").textContent = article.category;
-  document.getElementById(
-    "categoryLink"
-  ).href = `/?category=${encodeURIComponent(article.category)}`;
+  document.getElementById("categoryLink").href = `/?category=${encodeURIComponent(
+    article.category
+  )}`;
   document.getElementById("articleTitleBreadcrumb").textContent = article.title;
+
+  resolveCategoryHubUrl(article.category).then((path) => {
+    const link = document.getElementById("categoryLink");
+    link.href = path;
+    const abs = path.startsWith("http")
+      ? path
+      : new URL(path, window.location.origin).href;
+    document
+      .querySelectorAll('script[data-dynamic-ld="breadcrumbs"]')
+      .forEach((s) => s.remove());
+    const breadcrumbScript = document.createElement("script");
+    breadcrumbScript.type = "application/ld+json";
+    breadcrumbScript.setAttribute("data-dynamic-ld", "breadcrumbs");
+    breadcrumbScript.textContent = JSON.stringify(
+      generateBreadcrumbJSONLD(article, abs)
+    );
+    document.head.appendChild(breadcrumbScript);
+  });
 
   // Update article content
   document.getElementById("articleCategory").textContent = article.category;

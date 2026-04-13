@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ seo.seo_title }}</title>
+    <meta name="description" content="{{ seo.seo_description }}" />
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="{{ canonical_hub_root }}" />
+    <meta property="og:title" content="{{ seo.seo_title }}" />
+    <meta property="og:description" content="{{ seo.seo_description }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ canonical_hub_root }}" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ seo.seo_title }}" />
+    <meta name="twitter:description" content="{{ seo.seo_description }}" />
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <script type="application/ld+json">{{ webpage_ld_json | safe }}</script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg sticky-top shadow">
+        <div
+          class="container-fluid d-flex align-items-center justify-content-between flex-wrap gap-2"
+        >
+          <a href="/" class="navbar-brand fw-bold">
+            <i class="bi bi-newspaper fs-4 me-2"></i>Афиша Иркутска 2026
+          </a>
+          <div class="d-flex gap-2 flex-wrap">
+            <a href="/" class="nav-link btn btn-gradient">Главная</a>
+            <a href="/calendar/irkutsk-2026" class="nav-link btn btn-gradient"
+              >Календарь 2026</a
+            >
+          </div>
+        </div>
+      </nav>
+
+      <!-- Hero: та же сетка и типографика, что на главной -->
+      <section id="hub-hero" class="hero-section bg-gradient text-white py-5">
+        <div class="container-fluid">
+          <div class="row align-items-center min-vh-75">
+            <div class="col-lg-8">
+              <h1 class="display-3 fw-bold mb-4 fade-in">{{ seo.h1 }}</h1>
+              {% if filter_label %}
+              <p class="lead mb-4 fade-in text-white-50">
+                Уточнение по рубрике:
+                <strong class="text-white">{{ filter_label }}</strong>
+              </p>
+              {% else %}
+              <p class="lead mb-4 fade-in">
+                Ниже — подборка актуальных событий этого раздела. Можно вернуться
+                на главную и выбрать другую рубрику.
+              </p>
+              {% endif %}
+              <button
+                type="button"
+                class="btn btn-light btn-lg fade-in shadow-lg px-4 py-2 rounded-pill"
+                onclick="document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })"
+              >
+                Посмотреть афишу Иркутска
+                <i class="bi bi-arrow-down fs-6 ms-2"></i>
+              </button>
+            </div>
+            <div class="col-lg-4 text-center">
+              <img
+                src="https://afisha.bestjourneymap.com/assets/images/og-image.png"
+                alt="{{ seo.h1 }}"
+                class="img-fluid rounded shadow-lg fade-in"
+                style="max-height: 340px; object-fit: cover"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main
+      id="hub-page-root"
+      data-hub="{{ hub_id }}"
+      data-filter="{{ filter_tag or '' }}"
+    >
+      <section class="py-4 bg-light border-bottom hub-seo-intro" aria-label="Введение по разделу">
+        <div class="container-fluid col-lg-8 mx-auto">
+          <p class="mb-0 lead text-muted">{{ seo.intro_text }}</p>
+        </div>
+      </section>
+
+      <section id="events" class="py-5 bg-light hub-events-dynamic" aria-label="События из афиши">
+        <div class="container-fluid">
+          <h2 class="h4 fw-bold text-center mb-4">Афиша событий</h2>
+          <div id="tagHubLoading" class="row">
+            <div class="col-12 text-center py-4">
+              <div class="loading-spinner d-inline-block"></div>
+              <p class="mt-2 text-muted">Загрузка событий...</p>
+            </div>
+          </div>
+          <div id="tagHubNewsGrid" class="row"></div>
+          <div id="tagHubLoadMore" class="row" style="display: none">
+            <div class="col-12 text-center">
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-lg rounded-pill px-5"
+                id="tagHubLoadMoreBtn"
+              >
+                Загрузить ещё <i class="bi bi-plus-circle ms-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {% if seo.content_10x %}
+      <section class="py-5 bg-white border-top hub-content-10x" aria-label="Расширенный гид по разделу">
+        <div class="container-fluid col-lg-10 mx-auto tag-hub-10x">
+          <h2 class="h3 fw-bold mb-4">{{ seo.content_10x_title or "Гид по разделу: площадки, цены и советы" }}</h2>
+          <div class="content-10x">{{ seo.content_10x | safe }}</div>
+        </div>
+      </section>
+      {% endif %}
+
+      {% if seo.faq %}
+      <section class="py-5 bg-light border-top hub-faq-block" aria-label="Частые вопросы">
+        <div class="container-fluid col-lg-8 mx-auto">
+          <h2 class="h3 fw-bold mb-4">Частые вопросы</h2>
+          <div class="accordion" id="hubFaq">
+            {% for item in seo.faq %}
+            <div class="accordion-item">
+              <h3 class="accordion-header">
+                <button
+                  class="accordion-button {% if not loop.first %}collapsed{% endif %}"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faq-{{ loop.index }}"
+                  aria-expanded="{{ 'true' if loop.first else 'false' }}"
+                  aria-controls="faq-{{ loop.index }}"
+                >
+                  {{ item.question }}
+                </button>
+              </h3>
+              <div
+                id="faq-{{ loop.index }}"
+                class="accordion-collapse collapse {% if loop.first %}show{% endif %}"
+                data-bs-parent="#hubFaq"
+              >
+                <div class="accordion-body">{{ item.answer }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+      {% endif %}
+    </main>
+
+    <!-- Footer (same as main site) -->
+    <footer class="py-5 bg-gradient text-white mt-auto">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-4 mb-4">
+            <h5 class="fw-bold mb-3" style="color: #ffeb3b">
+              <i class="bi bi-newspaper fs-4 me-2"></i>Афиша Иркутска
+            </h5>
+            <p class="mb-3">
+              <b>Афиша Иркутска</b> — концерты, кино, спектакли, фестивали,
+              выставки, детские мероприятия. Мы делаем город ближе к вам —
+              планируйте свой досуг легко и удобно!
+            </p>
+            <div class="mb-3">
+              <h6>Партнер проекта</h6>
+              <p>
+                Хотите посетить все эти места? Возьмите автомобиль в аренду у
+                нашего партнера:
+                <a
+                  href="https://i-carrent.ru/catalog/arenda/"
+                  style="color: white"
+                  rel="sponsored"
+                  >Аренда автомобилей в Иркутске</a
+                >
+              </p>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-6 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">Быстрые ссылки</h6>
+            <ul class="list-unstyled">
+              <li>
+                <a href="/" class="text-white text-decoration-none">
+                  Главная
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://afisha.bestjourneymap.com/calendar/irkutsk-2026"
+                >
+                  Календарь 2026 </a
+                ><br />
+
+                <a
+                  href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-03/"
+                >
+                  Выходные Март </a
+                ><br />
+
+                <a
+                  href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-02/"
+                >
+                  Выходные Февраль </a
+                ><br />
+
+                <a
+                  href="https://afisha.bestjourneymap.com/weekend/irkutsk-2026-01/"
+                >
+                  Выходные Январь </a
+                ><br />
+              </li>
+              <li>
+                <a href="/#about" class="text-white text-decoration-none">
+                  О нас
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3" style="color: #ffeb3b">
+              Хотите быть в курсе событий Иркутска?
+            </h6>
+            <p class="mb-3" style="color: #fff">
+              Подпишитесь и получайте обновления афиши: концерты, театр, кино,
+              фестивали и выставки.
+            </p>
+          </div>
+        </div>
+        <hr class="my-4" />
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0" style="color: #fff">
+              © 2026 Афиша Иркутска. Все права защищены.
+            </p>
+            <p class="mb-0" style="color: #aaa; font-size: 13px">
+              <b>Отказ от ответственности:</b> Вся информация, размещённая на
+              сайте, носит ознакомительный и информационный характер.
+              Администрация проекта не несет ответственности за возможные
+              изменения в расписании, отмену мероприятий, неточности или
+              действия организаторов. Для получения актуальной информации
+              рекомендуем обращаться к официальным источникам и площадкам
+              проведения событий.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a
+              href="/docs/privacy.doc"
+              class="text-white text-decoration-none me-3"
+            >
+              Политика конфиденциальности
+            </a>
+            <a
+              href="/docs/terms.doc"
+              class="text-white text-decoration-none me-3"
+            >
+              Условия использования
+            </a>
+            <a href="/docs/cookies.doc" class="text-white text-decoration-none">
+              Политика файлов cookie
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/api-base.js"></script>
+    <script src="/assets/js/event-grid.js"></script>
+    <script src="/assets/js/tag-hub.js"></script>
+  </body>
+</html>

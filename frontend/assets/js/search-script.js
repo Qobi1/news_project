@@ -5,9 +5,8 @@ let currentResults = [];
 let isSearching = false;
 let hasSearched = false;
 let currentSearchQuery = '';
-
-// API Configuration
-const BACKEND_URL = 'https://afisha.bestjourneymap.com/api/';
+let hubLinkByCategory = {};
+let hubExcludedLower = new Set();
 
 // Icon configuration
 const ICONS = {
@@ -78,7 +77,8 @@ function mapApiNewsToArticle(apiNews) {
 
 async function fetchNews() {
   try {
-    const response = await fetch(`${BACKEND_URL}/news/`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/news/`);
     if (!response.ok) {
       throw new Error('Failed to fetch news');
     }
@@ -92,7 +92,8 @@ async function fetchNews() {
 
 async function fetchCategories() {
   try {
-    const response = await fetch(`${BACKEND_URL}/categories/`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/categories/`);
     if (!response.ok) {
       throw new Error('Failed to fetch categories');
     }
@@ -208,16 +209,28 @@ function renderSearchResults(results) {
 
 function renderCategoryButtons() {
   const categoryButtons = document.getElementById('categoryButtons');
-  
+
   const buttonsHTML = categories
     .filter(cat => cat !== 'Все')
-    .map(category => `
-      <a href="/?category=${encodeURIComponent(category)}" 
+    .map(category => {
+      const key = category.trim().toLowerCase();
+      if (hubExcludedLower.has(key)) {
+        return `
+      <a href="/" class="btn btn-outline-secondary btn-sm rounded-pill">${category}</a>`;
+      }
+      const hubHref = hubLinkByCategory[key];
+      if (hubHref) {
+        return `
+      <a href="${hubHref}" class="btn btn-outline-secondary btn-sm rounded-pill">${category}</a>`;
+      }
+      return `
+      <a href="/?category=${encodeURIComponent(category)}"
          class="btn btn-outline-secondary btn-sm rounded-pill">
         ${category}
-      </a>
-    `).join('');
-  
+      </a>`;
+    })
+    .join('');
+
   categoryButtons.innerHTML = buttonsHTML;
 }
 
@@ -375,12 +388,16 @@ async function initSearch() {
     const urlParams = new URLSearchParams(window.location.search);
     const searchQuery = urlParams.get('q');
     
-    // Fetch initial data
-    const [newsData, categoriesData] = await Promise.all([
+    const [newsData, categoriesData, manifest] = await Promise.all([
       fetchNews(),
-      fetchCategories()
+      fetchCategories(),
+      fetchHubManifest(),
     ]);
-    
+
+    hubLinkByCategory = manifest.byCategory || {};
+    hubExcludedLower = new Set(
+      (manifest.excluded || []).map((x) => String(x).toLowerCase())
+    );
     allNewsData = newsData;
     categories = categoriesData;
     

@@ -1,4 +1,5 @@
 import json
+import os
 import random
 import calendar
 from datetime import datetime, date, timedelta, timezone, time	
@@ -14,6 +15,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 from fastapi.responses import Response
 from sqlalchemy import func, and_, extract
+
+from config import (
+    API_BASE_URL,
+    BASE_URL,
+    HUB_SEO,
+    HUB_ORDER,
+    categories_for_hub,
+    hub_manifest_payload,
+    is_hub_id,
+    resolve_hub_filter_category,
+)
 
 
 app = FastAPI()
@@ -77,6 +89,12 @@ def get_db():
 
 
 # --- Endpoints ---
+@app.get("/config.json")
+def client_config():
+    """Public config for the static frontend (API base URL matches .env)."""
+    return {"apiBaseUrl": API_BASE_URL, "siteUrl": BASE_URL}
+
+
 @app.get("/news/", response_model=List[NewsBase])
 def get_news(db: Session = Depends(get_db)):
     today = date.today()
@@ -210,6 +228,56 @@ def get_categories_last_30_days(db: Session = Depends(get_db)):
     return categories
 
 
+@app.get("/hub-manifest/")
+def hub_manifest():
+    """Category label -> hub URL with ?filter= for navigation; 9 SEO hubs only."""
+    return hub_manifest_payload()
+
+
+def _filter_events_by_categories(db: Session, categories: List[str]) -> List:
+    """Same dedup logic as /filter/ but Event.category IN categories."""
+    today = date.today()
+    thirty_days_ago = today - timedelta(days=30)
+    subquery = (
+        db.query(
+            Event.original_title,
+            func.max(Event.created_at).label("max_created_at"),
+        )
+        .filter(Event.created_at >= thirty_days_ago)
+        .group_by(Event.original_title)
+        .subquery()
+    )
+    q = (
+        db.query(Event)
+        .join(
+            subquery,
+            (Event.original_title == subquery.c.original_title)
+            & (Event.created_at == subquery.c.max_created_at),
+        )
+        .filter(Event.category.in_(categories))
+    )
+    return q.order_by(Event.created_at.desc()).all()
+
+
+@app.get("/hub-events/{hub_id}/", response_model=List[NewsBase])
+def hub_events(
+    hub_id: str,
+    filter_tag: Optional[str] = Query(None, alias="filter"),
+    db: Session = Depends(get_db),
+):
+    if not is_hub_id(hub_id):
+        raise HTTPException(status_code=404, detail="Unknown hub")
+    if filter_tag:
+        cat = resolve_hub_filter_category(hub_id, filter_tag)
+        if not cat:
+            raise HTTPException(status_code=400, detail="Unknown filter")
+        categories = [cat]
+    else:
+        categories = categories_for_hub(hub_id)
+    if not categories:
+        return []
+    return _filter_events_by_categories(db, categories)
+
 
 @app.get("/sitemap.xml", response_class=Response)
 def generate_sitemap(request: Request, db: Session = Depends(get_db)):
@@ -220,7 +288,7 @@ def generate_sitemap(request: Request, db: Session = Depends(get_db)):
     - CalendarData pages
     - WeekendData pages
     """
-    base_url = "https://afisha.bestjourneymap.com"
+    base_url = BASE_URL
     now = datetime.utcnow()
 
     events = db.query(Event).all()
@@ -239,6 +307,16 @@ def generate_sitemap(request: Request, db: Session = Depends(get_db)):
     xml_lines.append("    <changefreq>daily</changefreq>")
     xml_lines.append("    <priority>1.0</priority>")
     xml_lines.append("  </url>")
+
+    # SEO hub landing pages (only 9 hubs; filtered ?filter= URLs are not indexed separately)
+    for hid in HUB_ORDER:
+        hub_url = f"{base_url}/{hid}/"
+        xml_lines.append("  <url>")
+        xml_lines.append(f"    <loc>{hub_url}</loc>")
+        xml_lines.append(f"    <lastmod>{now.strftime('%Y-%m-%d')}</lastmod>")
+        xml_lines.append("    <changefreq>weekly</changefreq>")
+        xml_lines.append("    <priority>0.85</priority>")
+        xml_lines.append("  </url>")
 
     # Event pages
     for event in events:
@@ -643,3 +721,56 @@ def calendar_event_detail(id: int, request: Request, db: Session = Depends(get_d
             "event": event_obj,
         },
     )
+
+
+@app.get("/{hub_id}/", response_class=HTMLResponse)
+def hub_page(
+    request: Request,
+    hub_id: str,
+    filter_tag: Optional[str] = Query(None, alias="filter"),
+):
+    """9 SEO hubs only; canonical always hub root (handled in hub.html)."""
+    if not is_hub_id(hub_id):
+        raise HTTPException(status_code=404, detail="Not found")
+    seo = HUB_SEO.get(hub_id)
+    if not seo:
+        raise HTTPException(status_code=404, detail="Not found")
+
+    canonical_hub_root = f"{BASE_URL}/{hub_id}/"
+    filter_label = None
+    if filter_tag:
+        cat = resolve_hub_filter_category(hub_id, filter_tag)
+        if not cat:
+            raise HTTPException(status_code=404, detail="Unknown filter")
+        filter_label = cat
+
+    webpage_ld = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": seo["h1"],
+        "description": seo["seo_description"],
+        "url": canonical_hub_root,
+        "inLanguage": "ru-RU",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Афиша Иркутска",
+            "url": BASE_URL,
+        },
+    }
+    return templates.TemplateResponse(
+        "hub.html",
+        {
+            "request": request,
+            "hub_id": hub_id,
+            "seo": seo,
+            "filter_tag": filter_tag,
+            "filter_label": filter_label,
+            "canonical_hub_root": canonical_hub_root,
+            "webpage_ld_json": json.dumps(webpage_ld, ensure_ascii=False),
+        },
+    )
+
+
+_frontend_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
+if os.path.isdir(_frontend_dir):
+    app.mount("/", StaticFiles(directory=_frontend_dir, html=True), name="frontend_root")

@@ -7,9 +7,8 @@ let articlesToShow = 8;
 let isSearching = false;
 let hasSearched = false;
 let currentSearchResults = [];
-
-// API Configuration
-const BACKEND_URL = 'https://afisha.bestjourneymap.com/api/';
+let hubLinkByCategory = {};
+let hubExcludedLower = new Set();
 
 // Icon configuration
 const ICONS = {
@@ -88,7 +87,8 @@ function mapApiNewsToArticle(apiNews) {
 
 async function fetchNews() {
   try {
-    const response = await fetch(`${BACKEND_URL}/news/`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/news/`);
     if (!response.ok) {
       throw new Error('Failed to fetch news');
     }
@@ -102,7 +102,8 @@ async function fetchNews() {
 
 async function fetchCategories() {
   try {
-    const response = await fetch(`${BACKEND_URL}/categories/`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/categories/`);
     if (!response.ok) {
       throw new Error('Failed to fetch categories');
     }
@@ -116,7 +117,8 @@ async function fetchCategories() {
 
 async function fetchNewsByCategory(category) {
   try {
-    const response = await fetch(`${BACKEND_URL}/filter/?category=${encodeURIComponent(category)}`);
+    const base = await resolveApiBaseUrl();
+    const response = await fetch(`${base}/filter/?category=${encodeURIComponent(category)}`);
     if (!response.ok) {
       throw new Error('Failed to fetch news by category');
     }
@@ -162,83 +164,15 @@ function hideLoading() {
 }
 
 function renderNewsGrid(newsData) {
-  const newsGrid = document.getElementById('newsGrid');
-  const loadMoreContainer = document.getElementById('loadMoreContainer');
-  
-  if (newsData.length === 0) {
-    newsGrid.innerHTML = `
-      <div class="col-12 text-center py-5">
-        <i class="${getIconClass(hasSearched ? 'SEARCH' : 'NEWS', 'DISPLAY', 'MUTED')}"></i>
-        <h3 class="mt-3 text-muted">
-          ${hasSearched ? 'По вашему запросу ничего не найдено' : 'Статьи не найдены'}
-        </h3>
-        <p class="text-muted">
-          ${hasSearched ? 
-            'Попробуйте изменить поисковый запрос или <button class="btn btn-link p-0 text-decoration-none" onclick="clearSearch()" style="color: #007bff;">очистить поиск</button>' : 
-            'Попробуйте изменить критерии поиска.'
-          }
-        </p>
-        ${hasSearched ? `
-          <div class="mt-4">
-            <button class="btn btn-outline-primary" onclick="clearSearch()">
-              <i class="${getIconClass('BACK', 'SM')} me-2"></i>Показать все новости
-            </button>
-          </div>
-        ` : ''}
-      </div>
-    `;
-    loadMoreContainer.style.display = 'none';
-    return;
-  }
-
-  const articlesToRender = newsData.slice(0, articlesToShow);
-  
-  newsGrid.innerHTML = articlesToRender.map((article, index) => `
-    <div class="col-lg-3 col-md-6 mb-4">
-      <article class="card h-100 shadow-lg border-0 hover-card fade-in-article" 
-               style="animation-delay: ${index * 0.1}s">
-        <img src="${article.image}" 
-             alt="${article.title}" 
-             class="card-img-top news-image rounded-top">
-        <div class="card-body d-flex flex-column">
-          <div class="mb-2">
-            <span class="badge bg-gradient mb-2 px-3 py-2 rounded-pill text-white" 
-                  style="font-size: 0.9rem;">
-              ${article.category}
-            </span>
-          </div>
-          <h5 class="card-title fw-bold mb-2 news-title">${article.title}</h5>
-          <div class="card-text text-muted flex-grow-1 mb-2 news-excerpt" 
-               style="overflow: hidden; text-overflow: ellipsis;">
-            <span>${getShortDescription(article.excerpt, 20)}</span>
-          </div>
-          <div class="mt-auto">
-            <div class="d-flex justify-content-between align-items-center mb-3 news-meta">
-              <small class="text-muted">
-                <i class="${getIconClass('CALENDAR', 'XS')} me-1"></i>
-                ${formatDateSafe(article.date)}
-              </small>
-              <small class="text-muted">
-                <i class="${getIconClass('PERSON', 'XS')} me-1"></i>
-                ${article.author || 'Новости Иркутска'}
-              </small>
-            </div>
-            <a href="article.html?id=${article.id}" 
-               class="btn btn-primary w-100 rounded-pill fw-bold">
-              Читать далее <i class="${getIconClass('FORWARD', 'XS')} ms-1"></i>
-            </a>
-          </div>
-        </div>
-      </article>
-    </div>
-  `).join('');
-
-  // Show/hide load more button
-  if (articlesToShow < newsData.length) {
-    loadMoreContainer.style.display = 'block';
-  } else {
-    loadMoreContainer.style.display = 'none';
-  }
+  EventGrid.renderNewsGrid({
+    newsData,
+    articlesToShow,
+    hasSearched,
+    emptyVariant: "default",
+    getIconClass,
+    formatDateSafe,
+    getShortDescription,
+  });
 }
 
 function renderCategoryButtons() {
@@ -260,17 +194,41 @@ function renderCategoryButtons() {
     `;
   }
 
-  // Regular categories
+  // Categories: <a> to SEO hub /hub/?filter=…, excluded → home, else legacy /?category=
   categories.forEach(cat => {
-    buttonsHTML += `
-      <button class="btn btn-outline-secondary btn-sm rounded-pill ${selectedCategory === cat ? 'active' : ''}"
-              style="background: ${selectedCategory === cat ? '#6c757d' : ''}; 
-                     color: ${selectedCategory === cat ? 'white' : '#6c757d'}; 
-                     font-weight: ${selectedCategory === cat ? 'bold' : 'normal'};"
-              onclick="handleCategoryClick('${cat}')">
+    if (cat === 'Все') {
+      const isActive = selectedCategory === 'Все';
+      buttonsHTML += `
+      <a href="/"
+         class="btn btn-outline-secondary btn-sm rounded-pill ${isActive ? 'active' : ''}"
+         style="background: ${isActive ? '#6c757d' : ''};
+                color: ${isActive ? 'white' : '#6c757d'};
+                font-weight: ${isActive ? 'bold' : 'normal'};">
         ${cat}
-      </button>
-    `;
+      </a>`;
+      return;
+    }
+    const key = cat.trim().toLowerCase();
+    if (hubExcludedLower.has(key)) {
+      buttonsHTML += `
+      <a href="/" class="btn btn-outline-secondary btn-sm rounded-pill">${cat}</a>`;
+      return;
+    }
+    const hubHref = hubLinkByCategory[key];
+    if (hubHref) {
+      buttonsHTML += `
+      <a href="${hubHref}" class="btn btn-outline-secondary btn-sm rounded-pill">${cat}</a>`;
+    } else {
+      const isActive = selectedCategory === cat;
+      buttonsHTML += `
+      <a href="/?category=${encodeURIComponent(cat)}"
+         class="btn btn-outline-secondary btn-sm rounded-pill ${isActive ? 'active' : ''}"
+         style="background: ${isActive ? '#6c757d' : ''};
+                color: ${isActive ? 'white' : '#6c757d'};
+                font-weight: ${isActive ? 'bold' : 'normal'};">
+        ${cat}
+      </a>`;
+    }
   });
 
   categoryButtons.innerHTML = buttonsHTML;
@@ -394,17 +352,33 @@ function handleSearchInput() {
 async function initApp() {
   try {
     showLoading();
-    
-    // Fetch initial data
-    const [newsData, categoriesData] = await Promise.all([
+
+    const [newsData, categoriesData, manifest] = await Promise.all([
       fetchNews(),
-      fetchCategories()
+      fetchCategories(),
+      fetchHubManifest(),
     ]);
-    
+
+    hubLinkByCategory = manifest.byCategory || {};
+    hubExcludedLower = new Set(
+      (manifest.excluded || []).map((x) => String(x).toLowerCase())
+    );
+
+    const params = new URLSearchParams(window.location.search);
+    const qCat = params.get("category");
+    if (qCat) {
+      const k = qCat.trim().toLowerCase();
+      if (hubLinkByCategory[k]) {
+        hideLoading();
+        window.location.replace(hubLinkByCategory[k]);
+        return;
+      }
+    }
+
     allNewsData = newsData;
     currentNewsData = newsData;
     categories = categoriesData;
-    
+
     // Render initial content
     renderNewsGrid(currentNewsData);
     renderCategoryButtons();

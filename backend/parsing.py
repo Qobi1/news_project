@@ -6,12 +6,11 @@ import pytz
 from datetime import datetime
 from db.sql import insert_event
 from openai import OpenAI
-from dotenv import load_dotenv
 from urllib.parse import urljoin
+
+from config import BASE_URL as PUBLIC_BASE_URL
 from parsing_weekends import parse_weekends_data
 from parsing_calendar import calendar_parsing
-
-load_dotenv()
 
 
 ISO_RE = re.compile(r"^\d{4}-\d{2}-\d{2}([ T]\d{2}:\d{2}(:\d{2})?([+-]\d{2}:\d{2}|Z)?)?$")
@@ -23,7 +22,7 @@ def to_iso_or_empty(s: str) -> str:
 
 USE_LLM = os.getenv("USE_LLM", "0") == "1"
 
-BASE_URL = "https://www.irk.ru"
+IRK_RU_BASE = "https://www.irk.ru"
 MOSCOW_TZ = pytz.timezone("Europe/Moscow")
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 client = OpenAI(api_key=OPENAI_API_KEY)
@@ -104,7 +103,6 @@ def parse_event_detail(url):
 def download_image(image_url: str) -> str | None:
     IMAGES_FOLDER = "images"
     os.makedirs(IMAGES_FOLDER, exist_ok=True)
-    BASE_URL = "https://afisha.bestjourneymap.com/api"
     try:
         original_name = image_url.split("/")[-1]
         timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -120,7 +118,7 @@ def download_image(image_url: str) -> str | None:
             print(f"Image saved to {filepath}")
 
             # Return full URL instead of backend path
-            file_url = f"{BASE_URL}/images/{filename}"
+            file_url = f"{PUBLIC_BASE_URL}/images/{filename}"
             return file_url
         else:
             print(f"Failed to download image, status code: {response.status_code}")
@@ -130,7 +128,7 @@ def download_image(image_url: str) -> str | None:
         return None
 
 def parse_listing():
-    url = BASE_URL + "/afisha/"
+    url = IRK_RU_BASE + "/afisha/"
     res = requests.get(url)
     res.encoding = "utf-8"
     soup = BeautifulSoup(res.text, "html.parser")
@@ -155,7 +153,7 @@ def parse_listing():
 
         # Ссылка
         link_tag = card.select_one(".afisha-article__link") or card.select_one("a.g-all-block-link")
-        link_url = BASE_URL + link_tag["href"] if link_tag else None
+        link_url = IRK_RU_BASE + link_tag["href"] if link_tag else None
 
         # 👉 Переходим на страницу события
         place, description = (None, None)
@@ -209,7 +207,7 @@ def job():
 
 def run_at_moscow_10():
     now = datetime.now(MOSCOW_TZ)
-    if now.hour == 20 and now.minute == 30:
+    if now.hour == 18 and now.minute == 42:
         job()
 
 if __name__ == "__main__":
