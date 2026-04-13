@@ -14,6 +14,8 @@ BASE_URL = os.getenv("BASE_URL", "http://127.0.0.1:8000").rstrip("/")
 _raw_api_path = (os.getenv("API_PATH") or "").strip()
 if _raw_api_path and not _raw_api_path.startswith("/"):
     _raw_api_path = "/" + _raw_api_path
+# Public URL prefix for API routes in production (e.g. "/api"); empty when the app is served at site root.
+API_PATH = _raw_api_path
 API_BASE_URL = (BASE_URL + _raw_api_path).rstrip("/") if _raw_api_path else BASE_URL
 
 # --- SEO hubs (edit titles/descriptions/h1 here; optional JSON merge below) ---

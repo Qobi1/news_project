@@ -18,6 +18,7 @@ from sqlalchemy import func, and_, extract
 
 from config import (
     API_BASE_URL,
+    API_PATH,
     BASE_URL,
     HUB_SEO,
     HUB_ORDER,
@@ -89,10 +90,22 @@ def get_db():
 
 
 # --- Endpoints ---
+def _client_config_payload():
+    """Matches backend/.env BASE_URL + API_PATH (see API_BASE_URL)."""
+    return {"apiBaseUrl": API_BASE_URL, "siteUrl": BASE_URL}
+
+
 @app.get("/config.json")
 def client_config():
-    """Public config for the static frontend (API base URL matches .env)."""
-    return {"apiBaseUrl": API_BASE_URL, "siteUrl": BASE_URL}
+    """Public config when the app is reached at site root (local dev, some proxies)."""
+    return _client_config_payload()
+
+
+if API_PATH:
+    # When nginx forwards only /api/* to the app, the browser loads /api/config.json.
+    @app.get(f"{API_PATH}/config.json")
+    def client_config_under_api_path():
+        return _client_config_payload()
 
 
 @app.get("/news/", response_model=List[NewsBase])
