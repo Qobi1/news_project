@@ -435,7 +435,11 @@ def get_weekend_data_by_month(
 
 
 @app.get("/event/{slug}", response_class=HTMLResponse)
+@app.get("/event/{slug}/", response_class=HTMLResponse)
 def event_detail(slug: str, request: Request, db: Session = Depends(get_db)):
+    # URL segment only; DB stores the same without a trailing slash (e.g. event/my-title).
+    slug = slug.strip().rstrip("/")
+    print(slug)
     event = db.query(WeekendData).filter(WeekendData.slug == f"event/{slug}").first()
     if not event:
         raise HTTPException(status_code=404, detail="Event not found")
