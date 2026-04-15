@@ -62,7 +62,8 @@ class CalendarData(Base):
 
 
 # Connect to the database (SQLite example)
-engine = create_engine('sqlite:///../backend/events.db', echo=False)
+engine = create_engine('sqlite:///../backend/events.db', echo=False) # server
+# engine = create_engine('sqlite:///../backend/events.db', echo=False)
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)

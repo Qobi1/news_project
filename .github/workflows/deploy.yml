@@ -45,6 +45,10 @@ jobs:
             git reset --hard origin/main &&
             source venv/bin/activate &&
             pip install -r requirements.txt &&
+          
+            chown www-data:www-data events.db &&
+            chmod 664 events.db &&
+            
             sudo systemctl restart news_project.service
             sudo systemctl restart parser.service
           "
