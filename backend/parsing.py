@@ -7,7 +7,7 @@ from datetime import datetime
 from db.sql import insert_event
 from openai import OpenAI
 from urllib.parse import urljoin
-
+from social_media.main import tg_message
 from config import BASE_URL as PUBLIC_BASE_URL
 from parsing_weekends import parse_weekends_data
 from parsing_calendar import calendar_parsing
@@ -191,8 +191,6 @@ def parse_listing():
             event_data["datetime_iso"] = None  # пустые/невалидные — в NULL
         insert_event(event_data)
         events.append(event_data)
-
-
     return events
 
 
@@ -203,11 +201,10 @@ def job():
     calendar_parsing_data = calendar_parsing()
     parsing_weekend_data = parse_weekends_data()
 
-   
 
 def run_at_moscow_10():
     now = datetime.now(MOSCOW_TZ)
-    if now.hour == 11 and now.minute == 50:
+    if now.hour == 7 and now.minute == 17:
         job()
 
 if __name__ == "__main__":

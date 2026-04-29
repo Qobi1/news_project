@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Куда сходить в Иркутске на выходных: календарь событий 2026</title>
+    <meta
+      name="description"
+      content="Полная афиша Иркутска на выходные. Планируйте отдых в 2026 году: концерты, театры, выставки и фестивали. Удобный выбор событий по месяцам!"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <style>
+      /* --- Стили для хаб-страницы /weekend/ --- */
+
+      .hub-container {
+        background-color: #f8f9fa; /* Легкий фон для контраста с карточками */
+      }
+
+      /* Общий стиль карточки месяца */
+      .month-card-wrapper .card {
+        border-radius: 16px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      /* Активные карточки (прошлые и текущие) */
+      .months-grid a.card {
+        background: #ffffff;
+        cursor: pointer;
+      }
+
+      .months-grid a.card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(13, 110, 253, 0.15) !important;
+        border-color: #0d6efd;
+      }
+
+      .months-grid a.card .month-title {
+        color: #212529;
+        transition: color 0.3s ease;
+      }
+
+      .months-grid a.card:hover .month-title {
+        color: #0d6efd;
+      }
+
+      /* Будущие карточки (Pending/Disabled) */
+      .month-card-wrapper .card.pending {
+        background-color: #f1f3f5;
+        border: 2px dashed #dee2e6; /* Тот самый пунктир */
+        opacity: 0.8;
+      }
+
+      .month-card-wrapper .card.pending .month-title {
+        color: #adb5bd;
+      }
+
+      .month-card-wrapper .card.pending .status-label {
+        background-color: #e9ecef !important;
+        color: #6c757d !important;
+      }
+
+      /* Особая карточка подписки (Subscribe) */
+      .subscribe-card {
+        background: linear-gradient(
+          135deg,
+          #ffeb3b 0%,
+          #fdd835 100%
+        ) !important;
+        border: none !important;
+      }
+
+      .subscribe-card .month-title {
+        color: #212529 !important;
+      }
+
+      .subscribe-card .status-text {
+        background-color: rgba(0, 0, 0, 0.1);
+        color: #212529;
+        font-weight: 600;
+      }
+
+      .subscribe-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0 10px 20px rgba(255, 235, 59, 0.3) !important;
+      }
+
+      /* Бейджи статусов */
+      .status-label {
+        font-weight: 500;
+        padding: 6px 12px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* Адаптивность заголовков */
+      @media (max-width: 768px) {
+        .display-4 {
+          font-size: 2.2rem;
+        }
+      }
+
+      /* FAQ Accordion Tuning */
+      #faqAccordion .accordion-button:not(.collapsed) {
+        background-color: #e7f1ff;
+        color: #0d6efd;
+        font-weight: 600;
+      }
+
+      #faqAccordion .accordion-button:focus {
+        box-shadow: none;
+        border-color: rgba(13, 110, 253, 0.1);
+      }
+    </style>
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <nav class="navbar navbar-expand-lg sticky-top shadow">
+        <div class="container-fluid">
+          <a href="/" class="navbar-brand fw-bold fs-3">
+            <i class="bi bi-newspaper fs-3 me-2"></i>Афиша Иркутска
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="flex-grow-1 py-5">
+      <div class="container-fluid">
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb bg-white px-3 py-2 rounded shadow-sm">
+            <li class="breadcrumb-item">
+              <a href="/" class="text-decoration-none">Главная</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Выходные</li>
+          </ol>
+        </nav>
+
+        <section class="row mb-5">
+          <div class="col-lg-10 mx-auto text-center">
+            <h1 class="display-4 fw-bold mb-4">
+              Афиша Иркутска на выходные 2026
+            </h1>
+            <p class="lead text-muted">
+              Ищете, чем заняться в ближайший уикенд? Мы собрали все события
+              Иркутска в одном месте. От масштабных концертов в «Труде» до
+              уютных выставок в Галерее Виктора Бронштейна и семейных прогулок
+              по 130-му кварталу. Выберите месяц, чтобы увидеть подробный план
+              мероприятий.
+            </p>
+          </div>
+        </section>
+
+        <section class="row g-4 mb-5" id="monthsGrid">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a
+              href="/weekend/irkutsk-2026-01/"
+              class="card h-100 shadow-sm text-decoration-none border-primary"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2">Январь 2026</h3>
+                <span class="badge text-bg-primary">События прошли</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a
+              href="/weekend/irkutsk-2026-02/"
+              class="card h-100 shadow-sm text-decoration-none border-primary"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2">Февраль 2026</h3>
+                <span class="badge text-bg-primary">События прошли</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <a
+              href="/weekend/irkutsk-2026-03/"
+              class="card h-100 shadow-sm text-decoration-none border-primary"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2">Март 2026</h3>
+                <span class="badge text-bg-success">Текущие события</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-04"
+              data-href="/weekend/irkutsk-2026-04/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Апрель 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Скоро в афише</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-05"
+              data-href="/weekend/irkutsk-2026-05/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Май 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-06"
+              data-href="/weekend/irkutsk-2026-06/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Июнь 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-07"
+              data-href="/weekend/irkutsk-2026-07/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Июль 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-08"
+              data-href="/weekend/irkutsk-2026-08/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Август 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-09"
+              data-href="/weekend/irkutsk-2026-09/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Сентябрь 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-10"
+              data-href="/weekend/irkutsk-2026-10/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Октябрь 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-11"
+              data-href="/weekend/irkutsk-2026-11/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Ноябрь 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 month-card-wrapper">
+            <div
+              class="card h-100 shadow-sm border-dashed pending"
+              data-date="2026-12"
+              data-href="/weekend/irkutsk-2026-12/"
+            >
+              <div class="card-body text-center py-4">
+                <h3 class="h5 fw-bold mb-2 text-muted">Декабрь 2026</h3>
+                <span class="badge text-bg-secondary status-label"
+                  >Афиша формируется</span
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="row justify-content-center py-5">
+          <div class="col-lg-8">
+            <h2 class="fw-bold mb-4 text-center">Часто задаваемые вопросы</h2>
+            <div class="accordion shadow-sm" id="faqAccordion">
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq1"
+                  >
+                    Как узнать расписание мероприятий в Иркутске на выходные?
+                  </button>
+                </h3>
+                <div
+                  id="faq1"
+                  class="accordion-collapse collapse show"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    В нашем календаре выберите интересующий месяц. Мы ежедневно
+                    обновляем данные о концертах, кинопремьерах, театральных
+                    постановках и фестивалях, которые проходят в субботу и
+                    воскресенье.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#faq2"
+                  >
+                    Когда появляется афиша на будущие месяцы?
+                  </button>
+                </h3>
+                <div
+                  id="faq2"
+                  class="accordion-collapse collapse"
+                  data-bs-parent="#faqAccordion"
+                >
+                  <div class="accordion-body">
+                    Афиша на будущие периоды активируется автоматически 1-го
+                    числа каждого месяца. Вы можете заранее увидеть список
+                    месяцев в нашей сетке планирования.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="py-5 bg-gradient text-white mt-auto">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0">© 2026 Афиша Иркутска. Все права защищены.</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <a
+              href="/docs/privacy.doc"
+              class="text-white text-decoration-none me-3 small"
+              >Политика конфиденциальности</a
+            >
+            <a
+              href="/docs/terms.doc"
+              class="text-white text-decoration-none small"
+              >Условия использования</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Как узнать расписание мероприятий в Иркутске на выходные?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "В нашем календаре выберите интересующий месяц. Мы ежедневно обновляем данные о концертах, кинопремьерах, театральных постановках и фестивалях, которые проходят в субботу и воскресенье."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Когда появляется афиша на будущие месяцы?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Афиша на будущие периоды активируется автоматически 1-го числа каждого месяца. Вы можете заранее увидеть список месяцев в нашей сетке планирования."
+            }
+          }
+        ]
+      }
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Получаем текущий год и месяц в формате "YYYY-MM"
+        const now = new Date();
+        const currentYearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+
+        // Находим все карточки со статусом pending (ожидающие)
+        const pendingCards = document.querySelectorAll(
+          ".month-card-wrapper .card.pending",
+        );
+
+        pendingCards.forEach((card) => {
+          const activationDate = card.dataset.date; // Берем из data-date (например, "2026-05")
+          const targetUrl = card.dataset.href; // Берем из data-href
+
+          // Если текущий месяц больше или равен месяцу активации карточки
+          if (currentYearMonth >= activationDate) {
+            // 1. Создаем правильную семантическую ссылку
+            const linkCard = document.createElement("a");
+            linkCard.href = targetUrl;
+            linkCard.className =
+              "card h-100 shadow-sm text-decoration-none border-primary";
+
+            // 2. Копируем внутренний контент (card-body)
+            linkCard.innerHTML = card.innerHTML;
+
+            // 3. Убираем "серые" стили текста у заголовка
+            const title = linkCard.querySelector("h3");
+            if (title) {
+              title.classList.remove("text-muted");
+              // Строку style.color убрали, теперь цвет контролируется через CSS и hover работает!
+            }
+
+            // 4. Меняем бейдж на успешный
+            const badge = linkCard.querySelector(".badge");
+            if (badge) {
+              badge.className = "badge text-bg-success";
+              badge.textContent = "Новые события";
+            }
+
+            // 5. Магия: заменяем неактивный DIV на кликабельный A в DOM-дереве
+            card.parentNode.replaceChild(linkCard, card);
+          }
+        });
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

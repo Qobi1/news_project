@@ -788,6 +788,50 @@ def hub_page(
     )
 
 
+from email.utils import format_datetime
+from xml.sax.saxutils import escape
+
+@app.get("/rss.xml")
+def rss_feed(db: Session = Depends(get_db)):
+    base = BASE_URL.rstrip("/")
+    items = (
+        db.query(Event)
+        .order_by(Event.created_at.desc())
+        .limit(50)
+        .all()
+    )
+
+    rss_items = []
+    for e in items:
+        title = escape(e.title or e.original_title or "Без названия")
+        desc = escape((e.description or "")[:1200])
+        link = f"{base}/article.html?id={e.id}"
+        pub = format_datetime(e.created_at) if e.created_at else format_datetime(datetime.utcnow())
+
+        rss_items.append(f"""
+        <item>
+          <title>{title}</title>
+          <link>{link}</link>
+          <guid isPermaLink="true">{link}</guid>
+          <description>{desc}</description>
+          <pubDate>{pub}</pubDate>
+        </item>
+        """)
+
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Афиша Иркутска</title>
+    <link>{base}/</link>
+    <description>Новые события и мероприятия Иркутска</description>
+    <language>ru-RU</language>
+    {''.join(rss_items)}
+  </channel>
+</rss>"""
+
+    return Response(content=xml, media_type="application/rss+xml; charset=utf-8")
+
+
 _frontend_dir = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
 if os.path.isdir(_frontend_dir):
     app.mount("/", StaticFiles(directory=_frontend_dir, html=True), name="frontend_root")

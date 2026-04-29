@@ -78,7 +78,6 @@ def insert_weekend_data(data: dict):
         session.close()
 
 
-
 # Directory for media storage
 MEDIA_DIR = os.path.join(os.path.dirname(__file__), "..", "images")
 os.makedirs(MEDIA_DIR, exist_ok=True)
