@@ -7,7 +7,6 @@ from datetime import datetime
 from db.sql import insert_event
 from openai import OpenAI
 from urllib.parse import urljoin
-from social_media.main import tg_message
 from config import BASE_URL as PUBLIC_BASE_URL
 from parsing_weekends import parse_weekends_data
 from parsing_calendar import calendar_parsing
