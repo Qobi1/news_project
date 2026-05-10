@@ -4,6 +4,7 @@ import random
 import calendar
 from datetime import datetime, date, timedelta, timezone, time	
 from typing import List, Optional
+from urllib.parse import quote
 from starlette.responses import HTMLResponse
 from starlette.templating import Jinja2Templates
 from fastapi import FastAPI, Depends, HTTPException, Query, Request
@@ -14,6 +15,7 @@ from db.model import Session
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.staticfiles import StaticFiles
 from fastapi.responses import Response
+from fastapi.responses import RedirectResponse
 from sqlalchemy import func, and_, extract
 
 from config import (
@@ -23,6 +25,7 @@ from config import (
     HUB_SEO,
     HUB_ORDER,
     categories_for_hub,
+    category_to_hub_url,
     hub_manifest_payload,
     is_hub_id,
     resolve_hub_filter_category,
@@ -35,6 +38,25 @@ app.mount("/images", StaticFiles(directory="images"), name="images")
 app.mount("/assets", StaticFiles(directory="../frontend/assets"), name="assets")
 app.mount("/docs", StaticFiles(directory="../frontend/docs"), name="docs")
 templates = Jinja2Templates(directory="../frontend")
+
+@app.middleware("http")
+async def normalize_legacy_category_query(request: Request, call_next):
+    """
+    Legacy frontend sometimes navigates to "/?category=<ru>".
+    Normalize it to "/{hub_id}/?filter=<slug>" so routing works consistently.
+    """
+    if request.url.path == "/":
+        category = request.query_params.get("category")
+        if category:
+            lookup = category_to_hub_url()
+            key = category.strip().lower()
+            target = lookup.get(key)
+            if target:
+                return RedirectResponse(url=target, status_code=307)
+            # Fallback: keep the new URL shape even if this exact category isn't mapped yet.
+            # hub_page/hub_events can interpret raw ?filter= as a category string.
+            return RedirectResponse(url=f"/city/?filter={quote(category)}", status_code=307)
+    return await call_next(request)
 
 
 # 👇 Add CORS middleware
@@ -282,9 +304,8 @@ def hub_events(
         raise HTTPException(status_code=404, detail="Unknown hub")
     if filter_tag:
         cat = resolve_hub_filter_category(hub_id, filter_tag)
-        if not cat:
-            raise HTTPException(status_code=400, detail="Unknown filter")
-        categories = [cat]
+        # Accept raw categories too (legacy / dynamic categories).
+        categories = [cat] if cat else [filter_tag]
     else:
         categories = categories_for_hub(hub_id)
     if not categories:
@@ -757,9 +778,8 @@ def hub_page(
     filter_label = None
     if filter_tag:
         cat = resolve_hub_filter_category(hub_id, filter_tag)
-        if not cat:
-            raise HTTPException(status_code=404, detail="Unknown filter")
-        filter_label = cat
+        # Show a friendly label even for raw categories.
+        filter_label = cat or filter_tag
 
     webpage_ld = {
         "@context": "https://schema.org",
