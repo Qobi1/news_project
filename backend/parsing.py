@@ -75,6 +75,21 @@ def parse_event_detail(url):
                 if saved_url:
                     img["src"] = saved_url
 
+        # Drop external/internal links but keep visible text (avoid "New Cinema*" being clickable)
+        for a in desc_el.select("a"):
+            a.unwrap()
+
+        # irk.ru cinema: strip date-carousel widget (shows as a wall of numbers off-site)
+        for junk in desc_el.select(
+            "section.calendar-wrapper, section.j-calendar-wrapper, .calendar-wrapper.j-calendar-wrapper"
+        ):
+            junk.decompose()
+        for junk in desc_el.select(
+            "#schedule-event .owl-nav, #schedule-event .owl-dots, "
+            ".cinemashedule .owl-nav, .cinemashedule .owl-dots"
+        ):
+            junk.decompose()
+
         description = str(desc_el)
     else:
         description = ""
