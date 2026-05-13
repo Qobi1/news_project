@@ -52,22 +52,81 @@ function formatDateSafe(dateString) {
   }
 }
 
+function stripHtmlToPlain(html) {
+  if (!html) return '';
+  try {
+    const doc = new DOMParser().parseFromString(String(html), 'text/html');
+    const root = doc.body;
+    root.querySelectorAll('script, style').forEach((el) => el.remove());
+    root
+      .querySelectorAll(
+        'section.calendar-wrapper, section.j-calendar-wrapper, .calendar-wrapper.j-calendar-wrapper'
+      )
+      .forEach((el) => el.remove());
+    return (root.textContent || '')
+      .replace(/\u00a0/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  } catch {
+    return String(html)
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+}
+
+function isCalendarNoisePlain(plain) {
+  const words = plain.split(/\s+/).filter(Boolean);
+  if (words.length < 10) return false;
+  const dayAbbrevs = new Set(['пн', 'вт', 'ср', 'чт', 'пт', 'сб', 'вс']);
+  const noise = words.filter(
+    (w) => /^\d{1,2}$/.test(w) || dayAbbrevs.has(w.toLowerCase())
+  ).length;
+  return noise / words.length > 0.35;
+}
+
 function getShortDescription(text, wordCount = 20) {
-  if (!text) return '';
-  const plainText = String(text)
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;/gi, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  const plainText = stripHtmlToPlain(text);
   if (!plainText) return '';
   const words = plainText.split(' ').filter(Boolean);
   if (!words.length) return '';
   return words.length > wordCount ? words.slice(0, wordCount).join(' ') + '...' : plainText;
 }
 
+function excerptForCard(api) {
+  const plain = stripHtmlToPlain(api.description);
+  if (plain.length >= 15 && !isCalendarNoisePlain(plain)) {
+    return plain;
+  }
+
+  const loc = (api.location || '').trim();
+  const cat = (api.category || '').trim();
+  const orig = (api.original_title || '').trim();
+  const title = (api.title || '').trim();
+  const bits = [];
+
+  if (plain.length >= 15 && isCalendarNoisePlain(plain)) {
+    const sentences = plain.split(/(?<=[.!?…])\s+/).filter((s) => !isCalendarNoisePlain(s));
+    if (sentences.length && sentences[0].trim().length >= 15) {
+      return sentences[0].trim();
+    }
+  }
+
+  if (loc) bits.push(loc);
+  if (cat) bits.push(cat);
+  if (orig && orig !== title) bits.push(orig);
+  if (bits.length) return bits.join(' · ');
+
+  if (title) return `Анонс: ${title}. Подробности на странице события.`;
+  return 'Подробности мероприятия на странице события.';
+}
+
 // API functions
 function mapApiNewsToArticle(apiNews) {
-  const excerpt = buildCardExcerpt(apiNews, 14);
+  const excerpt = excerptForCard(apiNews);
   return {
     id: apiNews.id,
     title: apiNews.title,

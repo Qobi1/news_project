@@ -48,13 +48,38 @@
     }
   }
 
+  function fallbackStripHtmlToPlain(html) {
+    if (!html) return "";
+    try {
+      const doc = new DOMParser().parseFromString(String(html), "text/html");
+      const root = doc.body;
+      root.querySelectorAll("script, style").forEach((el) => el.remove());
+      root
+        .querySelectorAll(
+          "section.calendar-wrapper, section.j-calendar-wrapper, .calendar-wrapper.j-calendar-wrapper"
+        )
+        .forEach((el) => el.remove());
+      return (root.textContent || "")
+        .replace(/\u00a0/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    } catch {
+      return String(html)
+        .replace(/<script[\s\S]*?<\/script>/gi, " ")
+        .replace(/<style[\s\S]*?<\/style>/gi, " ")
+        .replace(/<[^>]*>/g, " ")
+        .replace(/&nbsp;/gi, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+  }
+
   function fallbackGetShortDescription(text, wordCount = 20) {
-    if (!text) return "";
-    const plainText = String(text)
-      .replace(/<[^>]*>/g, " ")
-      .replace(/&nbsp;/gi, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+    const strip =
+      typeof global.stripHtmlToPlain === "function"
+        ? global.stripHtmlToPlain.bind(global)
+        : fallbackStripHtmlToPlain;
+    const plainText = strip(text);
     if (!plainText) return "";
     const words = plainText.split(" ").filter(Boolean);
     if (!words.length) return "";
@@ -63,28 +88,23 @@
       : plainText;
   }
 
-  function resolveHelper(name, fallback) {
-    return typeof global[name] === "function" ? global[name].bind(global) : fallback;
+  function cardExcerptLine(article, shortFn) {
+    const line = shortFn(article.excerpt, 20);
+    if (line) return line;
+    if (article.title) {
+      const fromTitle = shortFn(`Анонс: ${article.title}`, 20);
+      if (fromTitle) return fromTitle;
+    }
+    if (article.category && article.author) {
+      return `${article.category} · ${article.author}`;
+    }
+    if (article.category) return article.category;
+    if (article.author) return article.author;
+    return "Подробности мероприятия на странице события.";
   }
 
-  function cardExcerptText(article, short) {
-    const raw = (article.excerpt || "").trim();
-    if (raw) {
-      const snippet = short(raw, 20);
-      if (snippet) return snippet;
-    }
-    if (typeof buildCardExcerpt === "function") {
-      return buildCardExcerpt(
-        {
-          description: article.content || article.excerpt,
-          title: article.title,
-          location: article.author,
-          category: article.category,
-        },
-        14
-      );
-    }
-    return (article.title || "Событие в Иркутске").trim();
+  function resolveHelper(name, fallback) {
+    return typeof global[name] === "function" ? global[name].bind(global) : fallback;
   }
 
   function renderArticleCardsInner(articles, articlesToShow, options) {
@@ -111,7 +131,7 @@
           <h5 class="card-title fw-bold mb-2 news-title">${article.title}</h5>
           <div class="card-text text-muted flex-grow-1 mb-2 news-excerpt"
                style="overflow: hidden; text-overflow: ellipsis;">
-            <span>${cardExcerptText(article, short)}</span>
+            <span>${cardExcerptLine(article, short)}</span>
           </div>
           <div class="mt-auto">
             <div class="d-flex justify-content-between align-items-center mb-3 news-meta">
