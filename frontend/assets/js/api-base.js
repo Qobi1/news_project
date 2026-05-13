@@ -101,3 +101,63 @@ async function fetchTagHubManifest() {
   const j = await fetchHubManifest();
   return j.byCategory || {};
 }
+
+/** Strip irk.ru widgets / schedule blocks; return plain text for card excerpts. */
+function stripEventDescriptionHtml(html) {
+  if (!html || typeof html !== "string") return "";
+  try {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const root = doc.body;
+    root.querySelectorAll("script, style").forEach((el) => el.remove());
+    root
+      .querySelectorAll(
+        "section.calendar-wrapper, section.j-calendar-wrapper, .calendar-wrapper.j-calendar-wrapper"
+      )
+      .forEach((el) => el.remove());
+    root
+      .querySelectorAll(
+        "#schedule-event, .cinemashedule, .cinemashedule__item, .times, .owl-nav, .owl-dots"
+      )
+      .forEach((el) => el.remove());
+    const prefer = root.querySelector(
+      ".cinema__desc__content p, .event__attention__desc, .cinema__desc p, p"
+    );
+    if (prefer) {
+      const t = (prefer.textContent || "").replace(/\s+/g, " ").trim();
+      if (t.length >= 8) return t;
+    }
+    return (root.textContent || "").replace(/\s+/g, " ").trim();
+  } catch {
+    return String(html)
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+}
+
+function truncateWords(text, wordCount) {
+  const words = String(text || "")
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!words.length) return "";
+  return words.length > wordCount
+    ? words.slice(0, wordCount).join(" ") + "…"
+    : words.join(" ");
+}
+
+/** Short plain-text blurb for home / search / hub cards (always non-empty). */
+function buildCardExcerpt(api, wordCount = 14) {
+  const plain = stripEventDescriptionHtml(api.description);
+  if (plain.length >= 8) {
+    return truncateWords(plain, wordCount);
+  }
+  const title = (api.title || "").trim();
+  const loc = (api.location || "").trim();
+  const cat = (api.category || "").trim();
+  if (loc && cat) return truncateWords(`${cat}: ${loc}`, wordCount);
+  if (loc) return truncateWords(loc, wordCount);
+  if (cat && title) return truncateWords(`${cat} — ${title}`, wordCount);
+  if (title) return truncateWords(title, wordCount);
+  return "Событие в Иркутске";
+}

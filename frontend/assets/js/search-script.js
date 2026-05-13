@@ -54,20 +54,25 @@ function formatDateSafe(dateString) {
 
 function getShortDescription(text, wordCount = 20) {
   if (!text) return '';
-  
-  // Strip HTML tags for consistent word counting
-  const plainText = text.replace(/<[^>]*>/g, '');
-  const words = plainText.split(' ');
+  const plainText = String(text)
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!plainText) return '';
+  const words = plainText.split(' ').filter(Boolean);
+  if (!words.length) return '';
   return words.length > wordCount ? words.slice(0, wordCount).join(' ') + '...' : plainText;
 }
 
 // API functions
 function mapApiNewsToArticle(apiNews) {
+  const excerpt = buildCardExcerpt(apiNews, 14);
   return {
     id: apiNews.id,
     title: apiNews.title,
-    excerpt: apiNews.description,
-    content: apiNews.description,
+    excerpt,
+    content: apiNews.description || excerpt,
     image: apiNews.image_url,
     category: apiNews.category,
     date: apiNews.datetime_str,
@@ -224,7 +229,7 @@ function renderCategoryButtons() {
       <a href="${hubHref}" class="btn btn-outline-secondary btn-sm rounded-pill">${category}</a>`;
       }
       return `
-      <a href="/?category=${encodeURIComponent(category)}"
+      <a href="/city/?filter=${encodeURIComponent(category)}"
          class="btn btn-outline-secondary btn-sm rounded-pill">
         ${category}
       </a>`;

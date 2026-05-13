@@ -6,11 +6,12 @@
   let cachedArticles = [];
 
   function mapApiNewsToArticle(apiNews) {
+    const excerpt = buildCardExcerpt(apiNews, 14);
     return {
       id: apiNews.id,
       title: apiNews.title,
-      excerpt: apiNews.description,
-      content: apiNews.description,
+      excerpt,
+      content: apiNews.description || excerpt,
       image: apiNews.image_url,
       category: apiNews.category,
       date: apiNews.datetime_str,

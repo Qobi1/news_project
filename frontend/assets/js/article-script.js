@@ -101,6 +101,50 @@ function wrapImagesScrollable(html) {
   });
 }
 
+/**
+ * irk.ru cinema embed: date carousel (section.calendar-wrapper + owl) is useless off-site
+ * and renders as a wall of numbers / weekday abbreviations.
+ */
+function sanitizeArticleDescriptionHtml(html) {
+  if (!html || typeof html !== "string") return "";
+  try {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    const root = doc.body;
+    root.querySelectorAll("script, style").forEach((el) => el.remove());
+    // Remove links but keep their visible text (e.g. "New Cinema*")
+    root.querySelectorAll("a").forEach((a) => {
+      const text = (a.textContent || "").trim();
+      a.replaceWith(doc.createTextNode(text ? text : " "));
+    });
+    root
+      .querySelectorAll(
+        "section.calendar-wrapper, section.j-calendar-wrapper, .calendar-wrapper.j-calendar-wrapper"
+      )
+      .forEach((el) => el.remove());
+    root
+      .querySelectorAll(
+        "#schedule-event .owl-nav, #schedule-event .owl-dots, .cinemashedule .owl-nav, .cinemashedule .owl-dots"
+      )
+      .forEach((el) => el.remove());
+    return root.innerHTML;
+  } catch {
+    return html;
+  }
+}
+
+function plainTextFromArticleDescription(html, maxLen) {
+  const clean = sanitizeArticleDescriptionHtml(html || "");
+  try {
+    const doc = new DOMParser().parseFromString(clean, "text/html");
+    const t = (doc.body.textContent || "")
+      .replace(/\s+/g, " ")
+      .trim();
+    return maxLen ? t.slice(0, maxLen) : t;
+  } catch {
+    return (clean || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, maxLen || 200);
+  }
+}
+
 // API functions
 async function fetchNewsById(id) {
   try {
@@ -131,7 +175,7 @@ async function fetchNews() {
     return data.map((article) => ({
       id: article.id,
       title: article.title,
-      excerpt: article.description,
+      excerpt: plainTextFromArticleDescription(article.description, 180),
       content: article.description,
       image: article.image_url,
       category: article.category,
@@ -155,7 +199,7 @@ async function fetchRandomNews() {
     return data.map((article) => ({
       id: article.id,
       title: article.title,
-      excerpt: article.description,
+      excerpt: plainTextFromArticleDescription(article.description, 180),
       content: article.description,
       image: article.image_url,
       category: article.category,
@@ -204,11 +248,7 @@ function updateMetaTags(article) {
     article.og_image_1200 ||
     article.image_url ||
     `${baseUrl}/assets/images/og-image.png`;
-  const desc = (article.description || "")
-    .replace(/<[^>]*>/g, "")
-    .replace(/\s+/g, " ")
-    .slice(0, 200)
-    .trim();
+  const desc = plainTextFromArticleDescription(article.description, 200);
 
   // <title> и description
   document.title = article.title;
@@ -245,9 +285,7 @@ function updateMetaTags(article) {
 
 function generateJSONLD(article) {
   const baseUrl = window.location.origin;
-  const desc = (article.description || "")
-    .replace(/<[^>]*>/g, "")
-    .slice(0, 200);
+  const desc = plainTextFromArticleDescription(article.description, 200);
 
   return {
     "@context": "https://schema.org",
@@ -301,7 +339,7 @@ function generateBreadcrumbJSONLD(article, categoryPageAbsUrl) {
   const baseUrl = window.location.origin;
   const catUrl =
     categoryPageAbsUrl ||
-    `${baseUrl}/?category=${encodeURIComponent(article.category)}`;
+    `${baseUrl}/city/?filter=${encodeURIComponent(article.category)}`;
   const breadcrumbs = [
     { name: "Главная", url: baseUrl },
     {
@@ -330,7 +368,7 @@ async function resolveCategoryHubUrl(category) {
     const base = await resolveApiBaseUrl();
     const r = await fetch(`${base}/hub-manifest/`, { credentials: "omit" });
     if (!r.ok) {
-      return `/?category=${encodeURIComponent(category)}`;
+      return `/city/?filter=${encodeURIComponent(category)}`;
     }
     const j = await r.json();
     const map = j.byCategory || {};
@@ -342,7 +380,7 @@ async function resolveCategoryHubUrl(category) {
   } catch (_) {
     /* fall through */
   }
-  return `/?category=${encodeURIComponent(category)}`;
+  return `/city/?filter=${encodeURIComponent(category)}`;
 }
 
 // UI functions
@@ -407,7 +445,7 @@ function showArticle(article) {
   document.head.appendChild(jsonLdScript);
 
   document.getElementById("categoryLink").textContent = article.category;
-  document.getElementById("categoryLink").href = `/?category=${encodeURIComponent(
+  document.getElementById("categoryLink").href = `/city/?filter=${encodeURIComponent(
     article.category
   )}`;
   document.getElementById("articleTitleBreadcrumb").textContent = article.title;
@@ -437,8 +475,9 @@ function showArticle(article) {
     article.datetime_str
   );
   document.getElementById("articleLocation").textContent = article.location;
-  document.getElementById("articleDescription").innerHTML =
-    wrapImagesScrollable(article.description);
+  document.getElementById("articleDescription").innerHTML = wrapImagesScrollable(
+    sanitizeArticleDescriptionHtml(article.description)
+  );
   const container = document.getElementById("articleDescription");
   container.querySelectorAll("img").forEach((img) => {
     img.loading = "lazy";

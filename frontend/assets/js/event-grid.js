@@ -50,8 +50,14 @@
 
   function fallbackGetShortDescription(text, wordCount = 20) {
     if (!text) return "";
-    const plainText = text.replace(/<[^>]*>/g, "");
-    const words = plainText.split(" ");
+    const plainText = String(text)
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+    if (!plainText) return "";
+    const words = plainText.split(" ").filter(Boolean);
+    if (!words.length) return "";
     return words.length > wordCount
       ? words.slice(0, wordCount).join(" ") + "..."
       : plainText;
@@ -59,6 +65,26 @@
 
   function resolveHelper(name, fallback) {
     return typeof global[name] === "function" ? global[name].bind(global) : fallback;
+  }
+
+  function cardExcerptText(article, short) {
+    const raw = (article.excerpt || "").trim();
+    if (raw) {
+      const snippet = short(raw, 20);
+      if (snippet) return snippet;
+    }
+    if (typeof buildCardExcerpt === "function") {
+      return buildCardExcerpt(
+        {
+          description: article.content || article.excerpt,
+          title: article.title,
+          location: article.author,
+          category: article.category,
+        },
+        14
+      );
+    }
+    return (article.title || "Событие в Иркутске").trim();
   }
 
   function renderArticleCardsInner(articles, articlesToShow, options) {
@@ -85,7 +111,7 @@
           <h5 class="card-title fw-bold mb-2 news-title">${article.title}</h5>
           <div class="card-text text-muted flex-grow-1 mb-2 news-excerpt"
                style="overflow: hidden; text-overflow: ellipsis;">
-            <span>${short(article.excerpt, 20)}</span>
+            <span>${cardExcerptText(article, short)}</span>
           </div>
           <div class="mt-auto">
             <div class="d-flex justify-content-between align-items-center mb-3 news-meta">

@@ -218,7 +218,7 @@ def job():
 
 def run_at_moscow_10():
     now = datetime.now(MOSCOW_TZ)
-    if now.hour == 8 and now.minute == 10:
+    if now.hour == 8 and now.minute == 1:
         job()
 
 if __name__ == "__main__":
